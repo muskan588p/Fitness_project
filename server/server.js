@@ -16,6 +16,8 @@ const partials_path=path.join(__dirname, "./templates/partials");
 // app.use(express.static(static_path));  //isse main index.hmtl khulgyi
 //app.("public", "public");
 app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname,"assets")));
+
 app.set("view engine", "hbs");
 app.set("views", template_path);
 hbs.registerPartials(partials_path);
