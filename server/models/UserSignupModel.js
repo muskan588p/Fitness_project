@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
-    name:{
+const userSchema = new mongoose.Schema({
+    fullname:{
         type : String , 
         require : [ true , "please add your name"],
     },
     email:{
         type : String , 
         require : [ true , "please add your last name"],
-        unique:true
+        unique: true
     },
     phonenumber:{
         type : Number , 
@@ -35,4 +35,5 @@ const userSchema = mongoose.Schema({
 {
     timestamps : true ,
 });
-module.exports = new mongoose.model("User" , userSchema);
+const user = new mongoose.model("User" , userSchema);
+module.exports=user;
