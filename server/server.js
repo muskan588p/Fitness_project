@@ -14,7 +14,8 @@ const template_path=path.join(__dirname, "./templates/views");
 const partials_path=path.join(__dirname, "./templates/partials");
 
 // app.use(express.static(static_path));  //isse main index.hmtl khulgyi
-
+//app.("public", "public");
+app.use(express.static(path.join(__dirname,"public")));
 app.set("view engine", "hbs");
 app.set("views", template_path);
 hbs.registerPartials(partials_path);
@@ -23,9 +24,14 @@ hbs.registerPartials(partials_path);
 // });
 
 console.log(template_path);
-app.get('/',(req,res)=>{
+app.get('/login',(req,res)=>{
     res.render("login");
 });
+console.log(template_path);
+app.get('/',(req,res)=>{
+    res.render("index");
+});
+
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
