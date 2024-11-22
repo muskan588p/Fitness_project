@@ -60,8 +60,10 @@ app.post("/signup", async(req,res)=>{
               })
            
               const registered=await gym_new_user.save();
-              res.status(201).render("index");
-              console.log("Data Sent on our Database");
+            //   res.redirect('/login');
+            //   res.status(201).render("login");
+              res.redirect('/login?success=1');
+              console.log("User successfully registered");
         }
        
         else{

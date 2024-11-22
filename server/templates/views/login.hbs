@@ -5,10 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../../login.css">
+    <script>
+    // Show alert if "success" query parameter exists
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('success') === '1') {
+        document.getElementById('alertBox').classList.remove('hidden');
+      }
+    };
+
+    // Close alert box
+    const closeAlert = () => {
+      document.getElementById('alertBox').classList.add('hidden');
+    };
+  </script>
 </head>
 <body>
     {{>navbar}}
     <h1>login page</h1>
+
+    <!-- Alert Box -->
+    <div id="alertBox" class="alert hidden">
+      <p>User registered successfully!</p>
+      <span class="close-btn" onclick="closeAlert()">✖</span>
+    </div>
     <!-- Form Section -->
   <div class="form__container">
     <div class="form__card">
