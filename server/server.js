@@ -132,6 +132,11 @@ app.get('/',(req,res)=>{
     // res.render("index");
 });
 
+app.get('/apply',(req,res)=>{
+    res.render("apply");
+});
+
+
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
