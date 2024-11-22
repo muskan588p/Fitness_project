@@ -1,5 +1,7 @@
 const express = require("express");
 const session = require("express-session");
+const jwt = require("jsonwebtoken");
+const authenticate = require("./middleware/jwtAuthMiddleware");
 const path = require("path");
 const app = express();
 const hbs = require("hbs");
@@ -10,16 +12,16 @@ const trainerModel=require("./models/TrainerSignupModel");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const multer=require("multer");
-const storage=multer.diskStorage({
-    destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
-        return cb(null,"./uploads");
-    },  
-    filename: function(req,file,cb){
-        return cb(null, `${Date.now()}-${file.originalname}`);
-    },
-});
+// const storage=multer.diskStorage({
+//     destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
+//         return cb(null,"./uploads");
+//     },  
+//     filename: function(req,file,cb){
+//         return cb(null, `${Date.now()}-${file.originalname}`);
+//     },
+// });
 
-const upload=multer({storage: storage});
+// const upload=multer({storage: storage});
 
 dotenv.config();
 
@@ -84,7 +86,9 @@ app.post("/signup", async (req, res) => {
       const registered = await gym_new_user.save();
       //   res.redirect('/login');
       //   res.status(201).render("login");
-      res.redirect("/login?success=1");
+      // res.redirect("/login?success=1");
+      res.status(201).render("login", { success: 1 });
+
       console.log("User successfully registered");
     } else {
       res.send("password are not matching");
@@ -95,26 +99,67 @@ app.post("/signup", async (req, res) => {
 });
 
 //login route
+// app.post("/login", async (req, res) => {
+//   try {
+//     const email = req.body.email;
+//     const password = req.body.password;
+
+//     const userdata = await userModel.findOne({ email: email });
+
+//     bcrypt.compare(password, userdata.password, function (err, isMatch) {
+//       if (isMatch === true) {
+//         req.session.user = { username: userdata.fullname }; // Store username in the session// res.status(201).render("index");
+        
+//         console.log("Login Successful");
+//         res.status(201).redirect("/");
+//       } else {
+//         res.status(401).send("Invalid email or password");
+//         // res.send("Invalid Login details");
+//       }
+//     });
+//   } catch (error) {
+//     res.status(400).send("invalid login details");
+//   }
+// });
+
+//login route
 app.post("/login", async (req, res) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
+    const { email, password } = req.body;
 
-    const userdata = await userModel.findOne({ email: email });
-    bcrypt.compare(password, userdata.password, function (err, isMatch) {
-      if (isMatch === true) {
-        req.session.user = { username: userdata.fullname }; // Store username in the session// res.status(201).render("index");
-        console.log("Login Successful");
-        res.status(201).redirect("/");
-      } else {
-        res.status(401).send("Invalid email or password");
-        // res.send("Invalid Login details");
-      }
-    });
+    const userdata = await userModel.findOne({ email });
+
+    if (!userdata) {
+      return res.status(401).send("Invalid email or password");
+    }
+
+    const isMatch = await bcrypt.compare(password, userdata.password);
+
+    if (!isMatch) {
+      return res.status(401).send("Invalid email or password");
+    }
+
+    const token = userdata.generateToken();
+    console.log(token);
+
+    req.session.user = { username: userdata.fullname };
+
+    // res.status(200).json({
+    //   message: "Login successful",
+    //   token,
+    //   user: {
+    //     id: userdata._id,
+    //     fullname: userdata.fullname,
+    //     email: userdata.email,
+    //   },
+    // })
+    return res.redirect("/");
   } catch (error) {
-    res.status(400).send("invalid login details");
+    console.error(error);
+    res.status(500).send("An error occurred during login.");
   }
 });
+
 
 //logout route
 app.get("/logout", (req, res) => {
@@ -138,7 +183,8 @@ app.get("/apply", (req, res) => {
   res.render("apply");
 });
 
-app.post("/apply", upload.single("file"), async (req, res) => {
+// app.post("/apply", upload.single("file"), async (req, res) => {
+app.post("/apply", async (req, res) => {
   try {
     const trainer_user = new trainerModel({
       fullname: req.body.fullname,
