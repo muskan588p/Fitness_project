@@ -156,7 +156,10 @@ nav {
 }
 
 .nav__btns {
-  display: none;
+  display: flex;
+  align-items: center; 
+  justify-content: flex-end; 
+  gap: 1rem;
 }
 
 .header__container {

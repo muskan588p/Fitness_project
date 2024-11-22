@@ -35,9 +35,10 @@
         <div class="nav__btns">
           {{!-- <button class="btn" onclick="window.location.href='/login'">Login</button> --}}
           {{#if username}}
-          <span class="welcome-text">Welcome, {{username}}</span>
+            <span class="welcome-text">Welcome, {{username}}</span>
+            <button class="btn" onclick="window.location.href='/logout'">Logout</button>
           {{else}}
-          <button class="btn" onclick="window.location.href='/login'">Login</button>
+            <button class="btn" onclick="window.location.href='/login'">Login</button>
           {{/if}}
         </div>
       </nav>

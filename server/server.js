@@ -48,7 +48,7 @@ app.get('/signup',(req,res)=>{
 });
 
 
-
+//signup route
 app.post("/signup", async(req,res)=>{
     try{
     
@@ -84,6 +84,7 @@ app.post("/signup", async(req,res)=>{
     }          
 })
 
+//login route
 app.post("/login",async (req,res)=>{
     
     try{
@@ -107,6 +108,17 @@ app.post("/login",async (req,res)=>{
     }catch(error){
         res.status(400).send("invalid login details");
     }
+})
+
+//logout route
+app.get('/logout', (req,res) =>{
+    req.session.destroy((err)=> {
+        if(err){
+            console.error("Error during logout:", err);
+            return res.status(500).send("Error logging out.");
+        }
+        res.redirect('/');
+    })
 })
 
 
