@@ -7,6 +7,7 @@ const port = process.env.PORT || 5000;
 const connectDb = require("./config/dbConnection");
 const userModel=require("./models/UserSignupModel")
 const dotenv = require("dotenv");
+const bcrypt=require("bcrypt");
 dotenv.config();
 
 connectDb();
@@ -56,14 +57,16 @@ app.post("/signup", async(req,res)=>{
         const cpass=req.body.confirmpassword.trim();
 
         if(pass===cpass){
+           
+            const hashedPass=await bcrypt.hash(pass,10);
+
             const gym_new_user=new userModel({
                 fullname:req.body.fullname,
                 email:req.body.email,
                 phonenumber:req.body.phonenumber,
                 age:req.body.age,
                 gender:req.body.gender,
-                password:req.body.password,
-                confirmpassword:req.body.confirmpassword,
+                password:hashedPass,
        
               })
            
@@ -91,19 +94,19 @@ app.post("/login",async (req,res)=>{
         const email=req.body.email;
         const password=req.body.password;
 
-        
         const userdata=await userModel.findOne({email:email});
-        if(userdata && userdata.password === password){
-            req.session.user = { username: userdata.fullname }; // Store username in the session
-            // res.status(201).render("index");
-            console.log("Login Successful");
-            res.status(201).redirect('/');
-        }
-        else{
-            res.status(401).send('Invalid email or password');
-            // res.send("Invalid Login details");
-        }
-        // console.log("Login Successful");
+        bcrypt.compare(password,userdata.password,function(err,isMatch){
+            if(isMatch===true){
+                req.session.user = { username: userdata.fullname }; // Store username in the session// res.status(201).render("index");
+                console.log("Login Successful");
+                res.status(201).redirect('/');
+
+            }
+            else{
+                res.status(401).send('Invalid email or password');
+                // res.send("Invalid Login details");
+            }
+        });
 
     }catch(error){
         res.status(400).send("invalid login details");
