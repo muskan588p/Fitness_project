@@ -86,6 +86,14 @@ header {
   overflow: hidden;
 }
 
+.welcome-text {
+  font-size: 1rem;
+  color: #000000;
+  font-weight: bold;
+  margin-right: 1rem;
+  font-style:oblique;
+}
+
 nav {
   position: fixed;
   isolation: isolate;

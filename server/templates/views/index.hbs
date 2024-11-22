@@ -30,10 +30,15 @@
           <li><a href="#service">Services</a></li>
           <li><a href="#class">Classes</a></li>
           <li><a href="#contact">Blog</a></li>
-          <li><a href="#">Join Now</a></li>
+          {{!-- <li><a href="#">Join Now</a></li> --}}
         </ul>
         <div class="nav__btns">
+          {{!-- <button class="btn" onclick="window.location.href='/login'">Login</button> --}}
+          {{#if username}}
+          <span class="welcome-text">Welcome, {{username}}</span>
+          {{else}}
           <button class="btn" onclick="window.location.href='/login'">Login</button>
+          {{/if}}
         </div>
       </nav>
       

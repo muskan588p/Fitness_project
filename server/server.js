@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const app = express();
 const hbs=require('hbs');
@@ -9,6 +10,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 connectDb();
+
+app.use(session({
+    secret: '123abc', // Replace with a secure key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -84,13 +92,17 @@ app.post("/login",async (req,res)=>{
 
         
         const userdata=await userModel.findOne({email:email});
-        if(userdata.password==password){
-            res.status(201).render("index");
+        if(userdata && userdata.password === password){
+            req.session.user = { username: userdata.fullname }; // Store username in the session
+            // res.status(201).render("index");
+            console.log("Login Successful");
+            res.status(201).redirect('/');
         }
         else{
-            res.send("Invalid Login details");
+            res.status(401).send('Invalid email or password');
+            // res.send("Invalid Login details");
         }
-        console.log("Login Successful");
+        // console.log("Login Successful");
 
     }catch(error){
         res.status(400).send("invalid login details");
@@ -98,9 +110,11 @@ app.post("/login",async (req,res)=>{
 })
 
 
-console.log(template_path);
+// console.log(template_path);
 app.get('/',(req,res)=>{
-    res.render("index");
+    const username = req.session.user?.username || null; // Retrieve username from session
+    res.render("index", { username });
+    // res.render("index");
 });
 
 
