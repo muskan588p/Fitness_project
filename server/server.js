@@ -1,15 +1,18 @@
 const express = require("express");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
+const { signup, login, logout } = require("./controllers/userControllers");
 const authenticate = require("./middleware/jwtAuthMiddleware");
 const path = require("path");
 const app = express();
 const hbs = require("hbs");
-const port = process.env.PORT || 5000;
+// const port = process.env.PORT || 5000;
 const connectDb = require("./config/dbConnection");
 const userModel = require("./models/UserSignupModel");
 const trainerModel=require("./models/TrainerSignupModel");
 const dotenv = require("dotenv");
+dotenv.config();
+const port = process.env.PORT || 8000;
 const bcrypt = require("bcrypt");
 const multer=require("multer");
 // const storage=multer.diskStorage({
@@ -23,7 +26,7 @@ const multer=require("multer");
 
 // const upload=multer({storage: storage});
 
-dotenv.config();
+// dotenv.config();
 
 connectDb();
 
@@ -66,118 +69,122 @@ app.get("/signup", (req, res) => {
 });
 
 //signup route
-app.post("/signup", async (req, res) => {
-  try {
-    const pass = req.body.password.trim();
-    const cpass = req.body.confirmpassword.trim();
-
-    if (pass === cpass) {
-      const hashedPass = await bcrypt.hash(pass, 10);
-
-      const gym_new_user = new userModel({
-        fullname: req.body.fullname,
-        email: req.body.email,
-        phonenumber: req.body.phonenumber,
-        age: req.body.age,
-        gender: req.body.gender,
-        password: hashedPass,
-      });
-
-      const registered = await gym_new_user.save();
-      //   res.redirect('/login');
-      //   res.status(201).render("login");
-      // res.redirect("/login?success=1");
-      res.status(201).render("login", { success: 1 });
-
-      console.log("User successfully registered");
-    } else {
-      res.send("password are not matching");
-    }
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-//login route
-// app.post("/login", async (req, res) => {
+// app.post("/signup", async (req, res) => {
 //   try {
-//     const email = req.body.email;
-//     const password = req.body.password;
+//     const pass = req.body.password.trim();
+//     const cpass = req.body.confirmpassword.trim();
 
-//     const userdata = await userModel.findOne({ email: email });
+//     if (pass === cpass) {
+//       const hashedPass = await bcrypt.hash(pass, 10);
 
-//     bcrypt.compare(password, userdata.password, function (err, isMatch) {
-//       if (isMatch === true) {
-//         req.session.user = { username: userdata.fullname }; // Store username in the session// res.status(201).render("index");
-        
-//         console.log("Login Successful");
-//         res.status(201).redirect("/");
-//       } else {
-//         res.status(401).send("Invalid email or password");
-//         // res.send("Invalid Login details");
-//       }
-//     });
+//       const gym_new_user = new userModel({
+//         fullname: req.body.fullname,
+//         email: req.body.email,
+//         phonenumber: req.body.phonenumber,
+//         age: req.body.age,
+//         gender: req.body.gender,
+//         password: hashedPass,
+//       });
+
+//       const registered = await gym_new_user.save();
+//       //   res.redirect('/login');
+//       //   res.status(201).render("login");
+//       // res.redirect("/login?success=1");
+//       res.status(201).render("login", { success: 1 });
+
+//       console.log("User successfully registered");
+//     } else {
+//       res.send("password are not matching");
+//     }
 //   } catch (error) {
-//     res.status(400).send("invalid login details");
+//     res.status(400).send(error);
 //   }
 // });
 
-//login route
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+// //login route
+// // app.post("/login", async (req, res) => {
+// //   try {
+// //     const email = req.body.email;
+// //     const password = req.body.password;
 
-    const userdata = await userModel.findOne({ email });
+// //     const userdata = await userModel.findOne({ email: email });
 
-    if (!userdata) {
-      return res.status(401).send("Invalid email or password");
-    }
+// //     bcrypt.compare(password, userdata.password, function (err, isMatch) {
+// //       if (isMatch === true) {
+// //         req.session.user = { username: userdata.fullname }; // Store username in the session// res.status(201).render("index");
+        
+// //         console.log("Login Successful");
+// //         res.status(201).redirect("/");
+// //       } else {
+// //         res.status(401).send("Invalid email or password");
+// //         // res.send("Invalid Login details");
+// //       }
+// //     });
+// //   } catch (error) {
+// //     res.status(400).send("invalid login details");
+// //   }
+// // });
 
-    const isMatch = await bcrypt.compare(password, userdata.password);
+// //login route
+// app.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
 
-    if (!isMatch) {
-      return res.status(401).send("Invalid email or password");
-    }
+//     const userdata = await userModel.findOne({ email });
 
-    const token = userdata.generateToken();
-    console.log(token);
+//     if (!userdata) {
+//       return res.status(401).send("Invalid email or password");
+//     }
 
-    req.session.user = { username: userdata.fullname };
+//     const isMatch = await bcrypt.compare(password, userdata.password);
 
-    // res.status(200).json({
-    //   message: "Login successful",
-    //   token,
-    //   user: {
-    //     id: userdata._id,
-    //     fullname: userdata.fullname,
-    //     email: userdata.email,
-    //   },
-    // })
-    return res.redirect("/");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("An error occurred during login.");
-  }
-});
+//     if (!isMatch) {
+//       return res.status(401).send("Invalid email or password");
+//     }
+
+//     const token = userdata.generateToken();
+//     console.log(token);
+
+//     req.session.user = { username: userdata.fullname };
+
+//     // res.status(200).json({
+//     //   message: "Login successful",
+//     //   token,
+//     //   user: {
+//     //     id: userdata._id,
+//     //     fullname: userdata.fullname,
+//     //     email: userdata.email,
+//     //   },
+//     // })
+//     return res.redirect("/");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("An error occurred during login.");
+//   }
+// });
 
 
-//logout route
-app.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Error during logout:", err);
-      return res.status(500).send("Error logging out.");
-    }
-    res.redirect("/");
-  });
-});
+// //logout route
+// app.get("/logout", (req, res) => {
+//   req.session.destroy((err) => {
+//     if (err) {
+//       console.error("Error during logout:", err);
+//       return res.status(500).send("Error logging out.");
+//     }
+//     res.redirect("/");
+//   });
+// });
 
-// console.log(template_path);
+app.post("/signup", signup); // signup controller
+app.post("/login", login);   // login controller
+app.get("/logout", logout);  // logout controller
+
 app.get("/", (req, res) => {
   const username = req.session.user?.username || null; // Retrieve username from session
   res.render("index", { username });
-  // res.render("index");
 });
+
+// console.log(template_path);
 
 app.get("/apply", (req, res) => {
   res.render("apply");

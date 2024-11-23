@@ -33,17 +33,5 @@ const userSchema = new mongoose.Schema({
     timestamps : true ,
 });
 
-userSchema.methods.generateToken = async function(){
-    const token =  jwt.sign({
-        id: this._id, 
-        // email: this.email
-    },
-    process.env.JWT_SECRET_KEY,
-    {
-        expiresIn:"30d",
-    });
-    return token;
-    };
-    
 const user = new mongoose.model("User" , userSchema);
 module.exports=user;
