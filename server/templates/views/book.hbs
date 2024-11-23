@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book a Session</title>
-  <link rel="stylesheet" href="book.css">
+  <link rel="stylesheet" href="../../book.css">
 </head>
 <body>
   <header>
@@ -12,144 +12,80 @@
     <p>Select your preferences and schedule your workout!</p>
   </header>
   <main>
-    <!-- Preferred Day Section -->
-    <section class="category">
-      <h2>Preferred Day</h2>
-      <div class="card-container">
-        <div class="card available">
-          <h3>Monday</h3>
-        </div>
-        <div class="card available">
-          <h3>Tuesday</h3>
-        </div>
-        <div class="card available">
-          <h3>Wednesday</h3>
-        </div>
-        <div class="card unavailable">
-          <h3>Thursday</h3>
-          <p>Fully booked for this day.</p>
-        </div>
-        <div class="card available">
-          <h3>Friday</h3>
-        </div>
-        <div class="card available">
-          <h3>Saturday</h3>
-        </div>
-        <div class="card unavailable">
-          <h3>Sunday</h3>
-          <p>Fully booked for this day.</p>
-        </div>
-      </div>
-    </section>
+    <form action="/book-session" method="POST">
+      <!-- Preferred Day Section -->
+      <section class="category">
+        <h2>Preferred Day</h2>
+        <select name="preferredDay" required>
+          <option value="">Select a Day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday" disabled>Thursday (Fully booked)</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday" disabled>Sunday (Fully booked)</option>
+        </select>
+      </section>
 
-    <!-- Exercise Type Section -->
-    <section class="category">
-      <h2>Exercise Type</h2>
-      <div class="card-container">
-        <div class="card available">
-          <h3>Cardio</h3>
-          <p>High-energy sessions for endurance and fitness.</p>
-        </div>
-        <div class="card unavailable">
-          <h3>Strength Training</h3>
-          <p>Fully booked for the selected day.</p>
-        </div>
-        <div class="card available">
-          <h3>Yoga</h3>
-          <p>Relax and improve flexibility with guided sessions.</p>
-        </div>
-        <div class="card unavailable">
-          <h3>Zumba</h3>
-          <p>Fully booked for the selected day.</p>
-        </div>
-        <div class="card available">
-          <h3>HIIT</h3>
-          <p>High-intensity interval training for maximum calorie burn.</p>
-        </div>
-        <div class="card available">
-          <h3>Pilates</h3>
-          <p>Low-impact exercises for strength and flexibility.</p>
-        </div>
-        <div class="card unavailable">
-          <h3>Weightlifting</h3>
-          <p>Fully booked for the selected day.</p>
-        </div>
-        <div class="card available">
-          <h3>Spin Class</h3>
-          <p>Heart-pumping cycling sessions for endurance.</p>
-        </div>
-      </div>
-    </section>
+      <!-- Exercise Type Section -->
+      <section class="category">
+        <h2>Exercise Type</h2>
+        <select name="exerciseType" required>
+          <option value="">Select Exercise Type</option>
+          <option value="Cardio">Cardio</option>
+          <option value="Strength Training" disabled>Strength Training (Fully booked)</option>
+          <option value="Yoga">Yoga</option>
+          <option value="Zumba" disabled>Zumba (Fully booked)</option>
+          <option value="HIIT">HIIT</option>
+          <option value="Pilates">Pilates</option>
+          <option value="Weightlifting" disabled>Weightlifting (Fully booked)</option>
+          <option value="Spin Class">Spin Class</option>
+        </select>
+      </section>
 
-    <!-- Preferred Time Slot Section -->
-    <section class="category">
-      <h2>Preferred Time Slot</h2>
-      <div class="card-container">
-        <div class="card available">
-          <h3>6:00 AM - 7:00 AM</h3>
-        </div>
-        <div class="card unavailable">
-          <h3>7:00 AM - 8:00 AM</h3>
-        </div>
-        <div class="card available">
-          <h3>9:00 AM - 10:00 AM</h3>
-        </div>
-        <div class="card available">
-          <h3>11:00 AM - 12:00 PM</h3>
-        </div>
-        <div class="card unavailable">
-          <h3>2:00 PM - 3:00 PM</h3>
-        </div>
-        <div class="card available">
-          <h3>4:00 PM - 5:00 PM</h3>
-        </div>
-        <div class="card unavailable">
-          <h3>6:00 PM - 7:00 PM</h3>
-        </div>
-        <div class="card available">
-          <h3>8:00 PM - 9:00 PM</h3>
-        </div>
-      </div>
-    </section>
+      <!-- Preferred Time Slot Section -->
+      <section class="category">
+        <h2>Preferred Time Slot</h2>
+        <select name="timeSlot" required>
+          <option value="">Select a Time Slot</option>
+          <option value="6:00 AM - 7:00 AM">6:00 AM - 7:00 AM</option>
+          <option value="7:00 AM - 8:00 AM" disabled>7:00 AM - 8:00 AM (Fully booked)</option>
+          <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
+          <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+          <option value="2:00 PM - 3:00 PM" disabled>2:00 PM - 3:00 PM (Fully booked)</option>
+          <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
+          <option value="6:00 PM - 7:00 PM" disabled>6:00 PM - 7:00 PM (Fully booked)</option>
+          <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
+        </select>
+      </section>
 
-    <!-- Preferred Trainer Section -->
-    <section class="category">
-      <h2>Preferred Trainer</h2>
-      <div class="card-container">
-        <div class="card available">
-          <h3>John Doe</h3>
-          <p>Specializes in strength training and muscle gain.</p>
-        </div>
-        <div class="card available">
-          <h3>Jane Smith</h3>
-          <p>Expert in yoga and flexibility improvement.</p>
-        </div>
-        <div class="card available">
-          <h3>Michael Brown</h3>
-          <p>Cardio and endurance specialist.</p>
-        </div>
-      </div>
-    </section>
+      <!-- Preferred Trainer Section -->
+      <section class="category">
+        <h2>Preferred Trainer</h2>
+        <select name="trainer" required>
+          <option value="">Select a Trainer</option>
+          <option value="John Doe">John Doe</option>
+          <option value="Jane Smith">Jane Smith</option>
+          <option value="Michael Brown">Michael Brown</option>
+        </select>
+      </section>
 
-    <!-- Session Type Section -->
-    <section class="category">
-      <h2>Session Type</h2>
-      <div class="card-container">
-        <div class="card available">
-          <h3>Online</h3>
-          <p>Join the session virtually from the comfort of your home.</p>
-        </div>
-        <div class="card available">
-          <h3>Offline</h3>
-          <p>Attend the session at the gym facility in person.</p>
-        </div>
-      </div>
-    </section>
+      <!-- Session Type Section -->
+      <section class="category">
+        <h2>Session Type</h2>
+        <select name="sessionType" required>
+          <option value="">Select Session Type</option>
+          <option value="Online">Online</option>
+          <option value="Offline">Offline</option>
+        </select>
+      </section>
 
-    <!-- Book Now Button -->
-    <div class="book-now">
-      <button>Book Now</button>
-    </div>
+      <!-- Submit Button -->
+      <div class="book-now">
+        <button type="submit">Book Now</button>
+      </div>
+    </form>
   </main>
   <footer>
     <p>&copy; 2024 Your Gym. All Rights Reserved.</p>

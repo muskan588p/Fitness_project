@@ -15,6 +15,7 @@ dotenv.config();
 const port = process.env.PORT || 8000;
 const bcrypt = require("bcrypt");
 const multer=require("multer");
+const bookingSchema=require("./models/bookingModel");
 // const storage=multer.diskStorage({
 //     destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
 //         return cb(null,"./uploads");
@@ -223,6 +224,25 @@ app.post("/apply", async (req, res) => {
     res.status(400).send("invalid login details");
   }
 });
+
+app.post("/book-session", async (req, res) => {
+  const bookinguser=new bookingSchema({
+    preferredDay:req.body.preferredDay,
+    exerciseType:req.body.exerciseType,
+    timeSlot:req.body.timeSlot,
+    trainer:req.body.trainer,
+    sessionType:req.body.sessionType,
+
+  });
+
+  try {
+    const bookuser=await bookinguser.save();
+    res.send('<h1>Booking successful!</h1><a href="/">Go back</a>');
+  } catch (error) {
+    res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
