@@ -208,3 +208,58 @@ button:hover {
     margin-top: 120px; /* Account for the fixed navbar */
   }
 }
+.alert {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--secondary-color);/* Primary color */  
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: bold;
+  z-index: 1000;
+  animation: slide-down 0.5s ease;
+  height: 5rem;
+}
+
+.alert.hidden {
+  display: none;
+}
+
+.alert p {
+  margin: 0;
+  padding: 0;
+}
+
+.alert .close-btn {
+  margin-left: 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.alert .close-btn:hover {
+  color: #000000; /* Secondary color */
+}
+
+/* Slide-down animation */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+  
+
