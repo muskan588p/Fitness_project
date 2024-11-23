@@ -190,6 +190,10 @@ app.get("/apply", (req, res) => {
   res.render("apply");
 });
 
+app.get("/book", (req, res) => {
+  res.render("book");
+});
+
 // app.post("/apply", upload.single("file"), async (req, res) => {
 app.post("/apply", async (req, res) => {
   try {
