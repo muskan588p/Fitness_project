@@ -1,112 +1,92 @@
-/* General Styles */
+/* General Reset */
+body, h1, h2, h3, p, select, button {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body and Header */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-    color: #333;
-  }
-  
-  header {
-    background-color: #2c3e50;
-    color: #fff;
-    text-align: center;
-    padding: 20px 0;
-  }
-  
-  header h1 {
-    margin: 0;
-    font-size: 2.5em;
-  }
-  
-  header p {
-    margin: 10px 0 0;
-    font-size: 1.2em;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  h2 {
-    font-size: 1.8em;
-    margin-bottom: 10px;
-  }
-  
-  /* Card Container */
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-  }
-  
-  .card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    flex: 1 1 calc(25% - 20px);
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .card h3 {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #2c3e50;
-  }
-  
-  .card p {
-    font-size: 1em;
-    color: #666;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Availability Styling */
-  .card.available {
-    border: 2px solid #27ae60;
-    background-color: #eafaf1;
-  }
-  
-  .card.unavailable {
-    border: 2px solid #e74c3c;
-    background-color: #fdecea;
-    cursor: not-allowed;
-  }
-  
-  /* Book Now Button */
-  .book-now {
-    text-align: center;
-    margin-top: 30px;
-  }
-  
-  .book-now button {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .book-now button:hover {
-    background-color: #219150;
-  }
-  
-  footer {
-    text-align: center;
-    padding: 10px 0;
-    background-color: #2c3e50;
-    color: #fff;
-    font-size: 0.9em;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #222;
+}
+
+header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Main Content */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Styling */
+.category {
+  margin-bottom: 30px;
+}
+
+.category h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.category select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+
+/* Button Styling */
+.book-now {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.book-now button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.book-now button:hover {
+  background: #0056b3;
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #777;
+}
+
+footer p {
+  font-size: 0.9rem;
+}
