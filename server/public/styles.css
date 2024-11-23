@@ -427,6 +427,14 @@ nav {
   text-align: center;
 }
 
+.trainer__btn {
+  display: flex;
+  justify-content: center;  
+  align-items: center;     
+  height: 100px;           
+  margin-top: 20px;        
+}
+
 .apply-btn {
   margin-top: 1rem;
   background-color: black;
