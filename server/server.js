@@ -9,7 +9,7 @@ const hbs = require("hbs");
 // const port = process.env.PORT || 5000;
 const connectDb = require("./config/dbConnection");
 const userModel = require("./models/UserSignupModel");
-const trainerModel=require("./models/TrainerSignupModel");
+const trainerModel=require("./models/applicationModel");
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 8000;
@@ -218,7 +218,7 @@ app.post("/apply", async (req, res) => {
 
     const registered = await trainer_user.save();
     res.status(201).redirect("/");
-    console.log("Trainer data updated");
+    console.log("new trainer applied");
 
   } catch (error) {
     res.status(400).send("invalid login details");

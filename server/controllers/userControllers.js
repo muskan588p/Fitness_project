@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/UserSignupModel");
+const trainerModel = require("../models/trainerModel");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -56,7 +57,20 @@ const login = async (req, res) => {
         throw new Error("Please provide email and password");
     }
 
-    const userdata = await userModel.findOne({ email });
+    let userdata;
+    userdata = await userModel.findOne({ email });
+    let role = "user";
+
+    // If not found in user database, check in trainer database
+    if (!userData) {
+      userData = await trainerModel.findOne({ email });
+
+      // If found in trainer database, assign role as 'trainer'
+      if (userData) {
+        role = "trainer";
+      }
+    }
+
     if (!userdata) {
       return res.status(401).send("Invalid email or password");
     }
@@ -72,7 +86,8 @@ const login = async (req, res) => {
     const token = jwt.sign(
         { 
             id: userdata._id, 
-            email: userdata.email 
+            email: userdata.email ,
+            role,
         },
         process.env.JWT_SECRET_KEY,
         { 

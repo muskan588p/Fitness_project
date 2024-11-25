@@ -47,5 +47,5 @@ const trainerSchema = new mongoose.Schema({
 {
     timestamps : true ,
 });
-const trainer = new mongoose.model("Trainer" , trainerSchema);
-module.exports=trainer;
+const application = new mongoose.model("application" , trainerSchema);
+module.exports=application;
