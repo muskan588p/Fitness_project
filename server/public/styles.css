@@ -178,7 +178,7 @@ nav {
   text-align: center;
 }
 
-.header__container h1::before {
+/* .header__container h1::before {
   position: absolute;
   content: "GROW YOUR STRENGTH";
   top: -5rem;
@@ -188,7 +188,7 @@ nav {
   line-height: 10rem;
   color: rgba(0, 0, 0, 0.05);
   z-index: -1;
-}
+} */
 
 .header__container h2 {
   margin-bottom: 2rem;
@@ -211,7 +211,7 @@ nav {
 }
 
 .header__image img {
-  max-width: 300px;
+  max-width: 600px;
   margin-inline: auto;
 }
 
@@ -243,7 +243,7 @@ nav {
 }
 
 .about__image img {
-  max-width: 550px;
+  max-width: 270px;
   margin-inline: auto;
 }
 
@@ -647,7 +647,7 @@ nav {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .facility__container {
+  /* .facility__container {
     grid-template-columns:
       minmax(0, 1fr)
       minmax(0, calc(var(--max-width) / 2))
@@ -672,7 +672,7 @@ nav {
 
   .facility__content::before {
     grid-area: 1/2/2/5;
-  }
+  } */
 
   .mentor__grid {
     grid-template-columns: repeat(3, 1fr);
