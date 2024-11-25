@@ -1,94 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Session</title>
-  <link rel="stylesheet" href="../../book.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Gym Session</title>
+    <link rel="stylesheet" href="./book.css">
 </head>
 <body>
-  <header>
-    <h1>Book Your Gym Session</h1>
-    <p>Select your preferences and schedule your workout!</p>
-  </header>
-  <main>
-    <form action="/book-session" method="POST">
-      <!-- Preferred Day Section -->
-      <section class="category">
+    <header>
+        <h1>Book Your Gym Session</h1>
+        <p>Select your preferences and schedule your workout!</p>
+    </header>
+    <!-- Preferred Day Section -->
+    <section class="category">
         <h2>Preferred Day</h2>
-        <select name="preferredDay" required>
-          <option value="">Select a Day</option>
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday" disabled>Thursday (Fully booked)</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday" disabled>Sunday (Fully booked)</option>
-        </select>
+        <div class="card-container">
+          <div class="card available" data-value="Monday" data-category="preferredDay">Monday</div>
+          <div class="card available" data-value="Tuesday" data-category="preferredDay">Tuesday</div>
+          <div class="card available" data-value="Wednesday" data-category="preferredDay">Wednesday</div>
+          <div class="card available" data-value="Thursday" data-category="preferredDay">Thursday</div>
+          <div class="card available" data-value="Friday" data-category="preferredDay">Friday</div>
+          <div class="card available" data-value="Saturday" data-category="preferredDay">Saturday</div>
+        </div>
       </section>
-
+    
       <!-- Exercise Type Section -->
       <section class="category">
         <h2>Exercise Type</h2>
-        <select name="exerciseType" required>
-          <option value="">Select Exercise Type</option>
-          <option value="Cardio">Cardio</option>
-          <option value="Strength Training" disabled>Strength Training (Fully booked)</option>
-          <option value="Yoga">Yoga</option>
-          <option value="Zumba" disabled>Zumba (Fully booked)</option>
-          <option value="HIIT">HIIT</option>
-          <option value="Pilates">Pilates</option>
-          <option value="Weightlifting" disabled>Weightlifting (Fully booked)</option>
-          <option value="Spin Class">Spin Class</option>
-        </select>
+        <div class="card-container">
+          <div class="card available" data-value="Cardio" data-category="exerciseType">Cardio</div>
+          <div class="card available" data-value="Yoga" data-category="exerciseType">Yoga</div>
+          <div class="card available" data-value="Strength-Training" data-category="exerciseType">Strength-Training</div>
+          <div class="card available" data-value="Zumba" data-category="exerciseType">Zumba</div>
+          <div class="card available" data-value="Weight-Lifting" data-category="exerciseType">Weight-Lifting</div>
+          <div class="card available" data-value="Pilates" data-category="exerciseType">Pilates</div>
+        </div>
       </section>
-
-      <!-- Preferred Time Slot Section -->
+    
+      <!-- Time Slot Section -->
       <section class="category">
         <h2>Preferred Time Slot</h2>
-        <select name="timeSlot" required>
-          <option value="">Select a Time Slot</option>
-          <option value="6:00 AM - 7:00 AM">6:00 AM - 7:00 AM</option>
-          <option value="7:00 AM - 8:00 AM" disabled>7:00 AM - 8:00 AM (Fully booked)</option>
-          <option value="9:00 AM - 10:00 AM">9:00 AM - 10:00 AM</option>
-          <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
-          <option value="2:00 PM - 3:00 PM" disabled>2:00 PM - 3:00 PM (Fully booked)</option>
-          <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
-          <option value="6:00 PM - 7:00 PM" disabled>6:00 PM - 7:00 PM (Fully booked)</option>
-          <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
-        </select>
+        <div class="card-container">
+          <div class="card available" data-value="6:00 AM - 7:00 AM" data-category="timeSlot">6:00 AM - 7:00 AM</div>
+          <div class="card available" data-value="7:00 AM - 8:00 AM" data-category="timeSlot">7:00 AM - 8:00 AM</div>
+          <div class="card available" data-value="8:00 AM - 9:00 AM" data-category="timeSlot">8:00 AM - 9:00 AM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">9:00 AM - 10:00 AM</div>
+        </div>
       </section>
-
-      <!-- Preferred Trainer Section -->
+    
+      <!-- Trainer Section -->
       <section class="category">
         <h2>Preferred Trainer</h2>
-        <select name="trainer" required>
-          <option value="">Select a Trainer</option>
-          <option value="John Doe">John Doe</option>
-          <option value="Jane Smith">Jane Smith</option>
-          <option value="Michael Brown">Michael Brown</option>
-        </select>
+        <div class="card-container">
+          <div class="card available" data-value="John Doe" data-category="trainer">John Doe</div>
+          <div class="card available" data-value="Jane Smith" data-category="trainer">Jane Smith</div>
+          <div class="card available" data-value="Alex Johnson" data-category="trainer">Alex Johnson</div>
+        </div>
       </section>
-
+    
       <!-- Session Type Section -->
       <section class="category">
         <h2>Session Type</h2>
-        <select name="sessionType" required>
-          <option value="">Select Session Type</option>
-          <option value="Online">Online</option>
-          <option value="Offline">Offline</option>
-        </select>
+        <div class="card-container">
+          <div class="card available" data-value="Online" data-category="sessionType">Online</div>
+          <div class="card available" data-value="Offline" data-category="sessionType">Offline</div>
+        </div>
       </section>
-
-      <!-- Submit Button -->
+    
+      <!-- Book Now Button -->
       <div class="book-now">
-        <button type="submit">Book Now</button>
+        <button id="book-now">Book Now</button>
       </div>
-    </form>
-  </main>
-  <footer>
-    <p>&copy; 2024 Your Gym. All Rights Reserved.</p>
-  </footer>
+      <script src="script.js"></script>
 </body>
 </html>

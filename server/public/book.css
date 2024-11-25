@@ -1,42 +1,33 @@
 /* General Reset */
-body, h1, h2, h3, p, select, button {
+body, h1, h2, p, button {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
 }
 
-/* Body and Header */
 body {
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  background-color: #f5f5f5;
-  color: #333;
+  background: #f4f4f9;
   padding: 20px;
 }
 
+/* Header Styling */
 header {
   text-align: center;
+  background: linear-gradient(135deg, #007BFF, #0056b3);
+  color: white;
+  padding: 20px 0;
+  border-radius: 8px;
   margin-bottom: 30px;
 }
 
 header h1 {
-  font-size: 2rem;
-  color: #222;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
 header p {
   font-size: 1.2rem;
-  color: #666;
-}
-
-/* Main Content */
-main {
-  max-width: 800px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Section Styling */
@@ -45,48 +36,64 @@ main {
 }
 
 .category h2 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
   margin-bottom: 10px;
-  color: #444;
+  text-align: center;
 }
 
-.category select {
-  width: 100%;
-  padding: 10px;
+/* Card Container */
+.card-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Card Styling */
+.card {
+  padding: 15px 20px;
+  text-align: center;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #f9f9f9;
 }
 
-/* Button Styling */
+.card:hover {
+  background: #007BFF;
+  color: white;
+  border-color: #0056b3;
+}
+
+.card.selected {
+  background: #28a745;
+  color: white;
+  border-color: #1e7e34;
+  font-weight: bold;
+}
+
+/* Book Now Button */
 .book-now {
   text-align: center;
   margin-top: 20px;
 }
 
 .book-now button {
-  background: #007bff;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background: #007BFF;
   color: white;
   border: none;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .book-now button:hover {
   background: #0056b3;
-}
-
-/* Footer Styling */
-footer {
-  text-align: center;
-  margin-top: 20px;
-  color: #777;
-}
-
-footer p {
-  font-size: 0.9rem;
 }
