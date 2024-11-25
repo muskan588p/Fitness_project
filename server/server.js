@@ -225,23 +225,42 @@ app.post("/apply", async (req, res) => {
   }
 });
 
-app.post("/book-session", async (req, res) => {
-  const bookinguser=new bookingSchema({
-    preferredDay:req.body.preferredDay,
-    exerciseType:req.body.exerciseType,
-    timeSlot:req.body.timeSlot,
-    trainer:req.body.trainer,
-    sessionType:req.body.sessionType,
+// app.post("/book-session", async (req, res) => {
+//   const bookinguser=new bookingSchema({
+//     preferredDay:req.body.preferredDay,
+//     exerciseType:req.body.exerciseType,
+//     timeSlot:req.body.timeSlot,
+//     trainer:req.body.trainer,
+//     sessionType:req.body.sessionType,
 
+//   });
+
+//   try {
+//     const bookuser=await bookinguser.save();
+//     res.send('<h1>Booking successful!</h1><a href="/">Go back</a>');
+//   } catch (error) {
+//     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
+//   }
+// });
+app.post("/book-session", async (req, res) => {
+  const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
+
+  const booking = new bookingSchema({
+    preferredDay,
+    exerciseType,
+    timeSlot,
+    trainer,
+    sessionType
   });
 
   try {
-    const bookuser=await bookinguser.save();
+    const savedBooking = await booking.save();
     res.send('<h1>Booking successful!</h1><a href="/">Go back</a>');
   } catch (error) {
     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
   }
 });
+
 
 
 app.listen(port, () => {
