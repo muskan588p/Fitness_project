@@ -55,6 +55,12 @@ app.use(express.static(path.join(__dirname, "assets")));
 app.set("view engine", "hbs");
 app.set("views", template_path);
 hbs.registerPartials(partials_path);
+hbs.registerHelper('ifEquals', function(arg1, arg2, options) {
+  if (arg1 == arg2) {
+    return options.fn(this); // Render the block inside {{#ifEquals}}
+  }
+  return options.inverse(this); // Render the block inside {{else}}
+});
 // app.get('/',(req,res)=>{
 //     res.send("working");
 // });
@@ -182,7 +188,8 @@ app.get("/logout", logout);  // logout controller
 
 app.get("/", (req, res) => {
   const username = req.session.user?.username || null; // Retrieve username from session
-  res.render("index", { username });
+  const role = req.session.user?.role || null; // Retrieve role from session
+  res.render("index", { username, role });
 });
 
 // console.log(template_path);
@@ -253,14 +260,13 @@ app.post("/book-session", async (req, res) => {
     sessionType
   });
 
-  try {
+  try {  
     const savedBooking = await booking.save();
     res.send('<h1>Booking successful!</h1><a href="/">Go back</a>');
   } catch (error) {
     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
   }
 });
-
 
 
 app.listen(port, () => {

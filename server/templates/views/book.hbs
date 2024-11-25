@@ -71,7 +71,13 @@
       <div class="book-now">
         <button id="book-now">Book Now</button>
       </div>
+
+
       <script>
+
+
+        let selectedDays=[];
+
         document.getElementById("book-now").addEventListener("click", function() {
     // Get selected options
     const preferredDay = document.querySelector('.card.selected[data-category="preferredDay"]')?.dataset.value;
@@ -118,11 +124,28 @@
 document.querySelectorAll(".card").forEach(card => {
     card.addEventListener("click", function() {
         // Toggle the 'selected' class on cards
-        this.classList.toggle("selected");
-    });
+        if(this.classList.cointains("selected")){
+          this.classList.remove("selected");
+          selectedDays=selectedDays.filter(day=>day!==this.dataset.value);
+        }
+        else{
+            if(selectedDays.length<3){
+            this.classList.add("selected");
+            selectedDays.push(this.dataset.value);
+          }
+        
+           }else{
+                alert("You can only select a maximum of 3 days.");
+           });
+      });
+
+document.querySelectorAll(".card[data-categorry!='preferredDay']").forEach(card=>{
+  card.addEventListener("click",function(){
+    this.classList.toggle("selected");
+  });
 });
 
-      </script>
+</script>
       
 
 </body>

@@ -57,8 +57,8 @@ const login = async (req, res) => {
         throw new Error("Please provide email and password");
     }
 
-    let userdata;
-    userdata = await userModel.findOne({ email });
+    let userData;
+    userData = await userModel.findOne({ email });
     let role = "user";
 
     // If not found in user database, check in trainer database
@@ -71,12 +71,12 @@ const login = async (req, res) => {
       }
     }
 
-    if (!userdata) {
+    if (!userData) {
       return res.status(401).send("Invalid email or password");
     }
 
     //validate password
-    const isMatch = await bcrypt.compare(password, userdata.password);
+    const isMatch = await bcrypt.compare(password, userData.password);
 
     if (!isMatch) {
       return res.status(401).send("Invalid email or password");
@@ -85,8 +85,8 @@ const login = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
         { 
-            id: userdata._id, 
-            email: userdata.email ,
+            id: userData._id, 
+            email: userData.email ,
             role,
         },
         process.env.JWT_SECRET_KEY,
@@ -98,7 +98,7 @@ const login = async (req, res) => {
     console.log("Generated Token:", token);
 
     // Store user info in session
-    req.session.user = { username: userdata.fullname }; 
+    req.session.user = { username: userData.fullname, role: role }; 
 
     return res.redirect("/");
 
