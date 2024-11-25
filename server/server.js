@@ -2,7 +2,6 @@ const express = require("express");
 const session = require("express-session");
 const jwt = require("jsonwebtoken");
 const { signup, login, logout } = require("./controllers/userControllers");
-const authenticate = require("./middleware/jwtAuthMiddleware");
 const path = require("path");
 const app = express();
 const hbs = require("hbs");
@@ -16,6 +15,8 @@ const port = process.env.PORT || 8000;
 const bcrypt = require("bcrypt");
 const multer=require("multer");
 const bookingSchema=require("./models/bookingModel");
+const { authenticateUser } = require("./middleware/jwtAuthMiddleware");
+const cookieparser = require("cookie-parser");
 // const storage=multer.diskStorage({
 //     destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
 //         return cb(null,"./uploads");
@@ -42,6 +43,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(cookieParser())
 
 // const static_path=path.join(__dirname, "../client");
 const template_path = path.join(__dirname, "./templates/views");

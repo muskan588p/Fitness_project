@@ -72,81 +72,80 @@
         <button id="book-now">Book Now</button>
       </div>
 
-
       <script>
+    let selectedDays = [];
 
+    document.getElementById("book-now").addEventListener("click", function() {
+        // Get selected options
+        const preferredDay = document.querySelector('.card.selected[data-category="preferredDay"]')?.dataset.value;
+        const exerciseType = document.querySelector('.card.selected[data-category="exerciseType"]')?.dataset.value;
+        const timeSlot = document.querySelector('.card.selected[data-category="timeSlot"]')?.dataset.value;
+        const trainer = document.querySelector('.card.selected[data-category="trainer"]')?.dataset.value;
+        const sessionType = document.querySelector('.card.selected[data-category="sessionType"]')?.dataset.value;
 
-        let selectedDays=[];
+        // Check if all categories have selections
+        if (preferredDay && exerciseType && timeSlot && trainer && sessionType) {
+            // Create an object with the selected values
+            const bookingData = {
+                preferredDay,
+                exerciseType,
+                timeSlot,
+                trainer,
+                sessionType
+            };
 
-        document.getElementById("book-now").addEventListener("click", function() {
-    // Get selected options
-    const preferredDay = document.querySelector('.card.selected[data-category="preferredDay"]')?.dataset.value;
-    const exerciseType = document.querySelector('.card.selected[data-category="exerciseType"]')?.dataset.value;
-    const timeSlot = document.querySelector('.card.selected[data-category="timeSlot"]')?.dataset.value;
-    const trainer = document.querySelector('.card.selected[data-category="trainer"]')?.dataset.value;
-    const sessionType = document.querySelector('.card.selected[data-category="sessionType"]')?.dataset.value;
-
-    // Check if all categories have selections
-    if (preferredDay && exerciseType && timeSlot && trainer && sessionType) {
-        // Create an object with the selected values
-        const bookingData = {
-            preferredDay,
-            exerciseType,
-            timeSlot,
-            trainer,
-            sessionType
-        };
-
-        // Send POST request to backend API
-        fetch("/book-session", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(bookingData)
-        })
-        .then(response => response.text())
-        .then(data => {
-            // Handle response from server (e.g., show success message)
-            alert("Booking successful!");
-            window.location.href = "/"; // Redirect to home or desired page
-        })
-        .catch(error => {
-            console.error("Error booking session:", error);
-            alert("Error booking session. Please try again.");
-        });
-    } else {
-        alert("Please select all options before booking.");
-    }
-});
-
-// Add event listener to allow users to select cards
-document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("click", function() {
-        // Toggle the 'selected' class on cards
-        if(this.classList.cointains("selected")){
-          this.classList.remove("selected");
-          selectedDays=selectedDays.filter(day=>day!==this.dataset.value);
+            // Send POST request to backend API
+            fetch("/book-session", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Handle response from server (e.g., show success message)
+                alert("Booking successful!");
+                window.location.href = "/"; // Redirect to home or desired page
+            })
+            .catch(error => {
+                console.error("Error booking session:", error);
+                alert("Error booking session. Please try again.");
+            });
+        } else {
+            alert("Please select all options before booking.");
         }
-        else{
-            if(selectedDays.length<3){
-            this.classList.add("selected");
-            selectedDays.push(this.dataset.value);
-          }
-        
-           }else{
-                alert("You can only select a maximum of 3 days.");
-           });
-      });
+    });
 
-document.querySelectorAll(".card[data-categorry!='preferredDay']").forEach(card=>{
-  card.addEventListener("click",function(){
-    this.classList.toggle("selected");
-  });
-});
+    // Add event listener to allow users to select cards
+    document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", function() {
+            // Get the category of the clicked card
+            const category = this.dataset.category;
 
+            if (category === "preferredDay") {
+                // Special handling for "Preferred Day" where only 3 days can be selected
+                if (this.classList.contains("selected")) {
+                    this.classList.remove("selected");
+                    selectedDays = selectedDays.filter(day => day !== this.dataset.value);
+                } else {
+                    if (selectedDays.length < 3) {
+                        this.classList.add("selected");
+                        selectedDays.push(this.dataset.value);
+                    } else {
+                        alert("You can only select a maximum of 3 days.");
+                    }
+                }
+            } else {
+                // Allow selection for other categories
+                this.classList.toggle("selected");
+            }
+        });
+    });
 </script>
-      
+
+
+
 
 </body>
 </html>
