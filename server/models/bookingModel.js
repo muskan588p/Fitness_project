@@ -6,6 +6,8 @@ const bookingSchema = new mongoose.Schema({
     timeSlot: { type: String, required: true },
     trainer: { type: String, required: true },
     sessionType: { type: String, required: true },
+    email: { type: String, required: true }, // Store the user's email
+
 }, { timestamps: true });
 
   

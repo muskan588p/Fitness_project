@@ -45,13 +45,13 @@
           <div class="card available" data-value="7:00 AM - 8:00 AM" data-category="timeSlot">7:00 AM - 8:00 AM</div>
           <div class="card available" data-value="8:00 AM - 9:00 AM" data-category="timeSlot">8:00 AM - 9:00 AM</div>
           <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">9:00 AM - 10:00 AM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">10:00 AM - 11:00 AM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">11:00 AM - 12:00 AM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">12:00 AM - 1:00 PM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">1:00 PM - 2:00 PM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">2:00 PM - 3:00 PM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">3:00 PM - 4:00 PM</div>
-          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">4:00 PM - 5:00 PM</div>
+          <div class="card available" data-value="10:00 AM - 11:00 AM" data-category="timeSlot">10:00 AM - 11:00 AM</div>
+          <div class="card available" data-value="11:00 AM - 12:00 AM" data-category="timeSlot">11:00 AM - 12:00 AM</div>
+          <div class="card available" data-value="12:00 PM - 1:00 PM" data-category="timeSlot">12:00 AM - 1:00 PM</div>
+          <div class="card available" data-value="1:00 PM - 2:00 PM" data-category="timeSlot">1:00 PM - 2:00 PM</div>
+          <div class="card available" data-value="2:00 PM - 3:00 PM" data-category="timeSlot">2:00 PM - 3:00 PM</div>
+          <div class="card available" data-value="3:00 AM - 4:00 PM" data-category="timeSlot">3:00 PM - 4:00 PM</div>
+          <div class="card available" data-value="4:00 AM - 5:00 AM" data-category="timeSlot">4:00 PM - 5:00 PM</div>
 
         </div>
       </section>
@@ -95,13 +95,16 @@
                   method: "POST",
                   headers: {
                       "Content-Type": "application/json"
+                      //"Authorization": `Bearer ${localStorage.getItem("token")}`,  Ensure token is provided
+
                   },
                   body: JSON.stringify(bookingData)
               })
               .then(response => {
                   if (response.ok) {
                       alert("Booking successful!");
-                      window.location.reload(); // Reload to update booked slots
+                      //window.location.reload();  Reload to update booked slots
+                      window.location.href = "/";
                   } else if (response.status === 409) {
                       alert("This session is already booked.");
                       // Highlight the conflicting time slot in red

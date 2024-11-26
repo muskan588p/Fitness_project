@@ -62,7 +62,7 @@ const signup = async (req, res) => {
     res.status(201).json(gym_new_user)
 
   } catch (error) {
-    console.error("Error during signup:", error);
+    console.log("Error during signup:", error);
     return res.status(400).send("An error occurred during signup.");
   }
 };

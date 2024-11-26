@@ -20,6 +20,7 @@ const cookieparser = require("cookie-parser");
 
 const authenticateToken = require('./middleware/jwtAuthMiddleware');
 const Booking = require('./models/bookingModel');
+const authenticateUser = require("./middleware/jwtAuthMiddleware");
 // const cheatsheetRoute = require("./routes/cheatsheetRoute");
 
 // const storage=multer.diskStorage({
@@ -263,10 +264,20 @@ app.post("/apply", async (req, res) => {
 //     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
 //   }
 // });
-app.post('/book-session', async (req, res) => {
+app.post('/book-session',authenticateUser ,async (req, res) => {
+  
+  console.log("Request body:", req.body); // Log incoming data
+  console.log("User data:", req.user);   // Log authenticated user data
+
   const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
 
   try {
+      const email = req.user.email; // Extract email from authenticated user
+
+        // Ensure all required fields are present
+        if (!preferredDay || !exerciseType || !timeSlot || !trainer || !sessionType || !email) {
+            return res.status(400).send("All fields are required");
+      }
       // Save the booking
       const newBooking = new Booking({ preferredDay, exerciseType, timeSlot, trainer, sessionType });
       await newBooking.save();
