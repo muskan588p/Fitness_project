@@ -204,9 +204,9 @@ app.get("/book", (req, res) => {
   res.render("book");
 });
 
-app.get("/cheatsheet", (req, res) => {
-  res.render("cheatsheet");
-});
+// app.get("/cheatsheet", authorizeTrainer, (req, res) => {
+//   res.render("cheatsheet");
+// });
 
 // app.post("/apply", upload.single("file"), async (req, res) => {
 app.post("/apply", async (req, res) => {

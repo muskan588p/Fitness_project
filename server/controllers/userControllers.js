@@ -148,7 +148,7 @@ const login = async (req, res) => {
         throw new Error("Please provide email and password");
     }
 
-    const userData = await userModel.findOne({ email });
+    let userData = await userModel.findOne({ email });
     let role = "user";
 
     // If not found in user database, check in trainer database
@@ -187,10 +187,10 @@ const login = async (req, res) => {
       console.log("Generated Token:", token);
 
       //cookie
-      const options={
-        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        httpOnly:true
-      };
+      // const options={
+      //   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      //   httpOnly:true
+      // };
       // res.status(200).cookie("token", token, options).json({
       //   success:true,
       //   token,
@@ -200,6 +200,7 @@ const login = async (req, res) => {
       const ver=await jwt.verify(token, process.env.JWT_SECRET_KEY);
       console.log(ver);
 
+      req.session.user = { username: userData.fullname, role: role }; 
        return res.redirect("/");
     }
 
@@ -208,7 +209,7 @@ const login = async (req, res) => {
     // console.log("Generated Token:", token);
 
     // Store user info in session
-    req.session.user = { username: userData.fullname, role: role }; 
+    // req.session.user = { username: userData.fullname, role: role }; 
 
     // return res.redirect("/");
 
