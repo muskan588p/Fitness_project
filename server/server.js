@@ -15,8 +15,12 @@ const port = process.env.PORT || 8000;
 const bcrypt = require("bcrypt");
 const multer=require("multer");
 const bookingSchema=require("./models/bookingModel");
-const { authenticateUser } = require("./middleware/jwtAuthMiddleware");
+// const authorizeTrainer = require("./middleware/jwtAuthMiddleware");
 const cookieparser = require("cookie-parser");
+
+const authenticateToken = require('./middleware/jwtAuthMiddleware');
+// const cheatsheetRoute = require("./routes/cheatsheetRoute");
+
 // const storage=multer.diskStorage({
 //     destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
 //         return cb(null,"./uploads");
@@ -69,13 +73,14 @@ hbs.registerHelper('ifEquals', function(arg1, arg2, options) {
 
 console.log(template_path);
 
-app.get("/login", (req, res) => {
+app.get("/login",  (req, res) => {
   res.render("login");
 });
 
 app.get("/signup", (req, res) => {
   res.render("signup");
 });
+
 
 //signup route
 // app.post("/signup", async (req, res) => {
@@ -187,6 +192,7 @@ app.get("/signup", (req, res) => {
 app.post("/signup", signup); // signup controller
 app.post("/login", login);   // login controller
 app.get("/logout", logout);  // logout controller
+// app.post("/cheatsheet", cheatsheet);  // logout controller
 
 app.get("/", (req, res) => {
   const username = req.session.user?.username || null; // Retrieve username from session
@@ -203,6 +209,11 @@ app.get("/apply", (req, res) => {
 app.get("/book", (req, res) => {
   res.render("book");
 });
+
+app.get("/cheatsheet", (req, res) => {
+  res.status(200).render("cheatsheet");
+});
+
 
 // app.get("/cheatsheet", authorizeTrainer, (req, res) => {
 //   res.render("cheatsheet");

@@ -340,5 +340,30 @@
       </div>
     </section>
 
+    <script>
+  function accessGymData() {
+    const token = localStorage.getItem("token"); // Assuming you're storing the token in local storage
+    if (token) {
+      fetch('/cheatsheet', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/cheatsheet';
+        } else {
+          alert('You do not have access to this page.');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    } else {
+      alert('You need to log in first.');
+    }
+  }
+</script>
+
   </body>
 </html>
