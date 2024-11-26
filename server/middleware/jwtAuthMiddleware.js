@@ -55,41 +55,41 @@
 
 // ---------------------------------------------------------------------------------------
 
-// const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
-// const authenticateUser = (req, res, next) => {
-//   const authorization = req.headers.authorization;
+const authenticateUser = (req, res, next) => {
+  const authorization = req.headers.authorization;
   
 
-//   if (!authorization) {
-//     return res.status(401).send("Please log in to book a session");
-//   }
+  if (!authorization) {
+    return res.status(401).send("Please log in to book a session");
+  }
 
-//   // Extract the token from the header
-//   const token = authorization.split(" ")[1];
-//   if (!token) {
-//     return res.status(401).send("Unauthorized access. No token provided.");
-//   }
+  // Extract the token from the header
+  const token = authorization.split(" ")[1];
+  if (!token) {
+    return res.status(401).send("Unauthorized access. No token provided.");
+  }
 
-//   try {
-//     // Verify the token using the secret/private key
-//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-//     req.user = decodedToken; // Attach the decoded user information to the request object
-//     console.log("User authenticated:", decodedToken);
+  try {
+    // Verify the token using the secret/private key
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = decodedToken; // Attach the decoded user information to the request object
+    console.log("User authenticated:", decodedToken);
 
-//     // Prevent trainers from booking
-//     if (req.user.role && req.user.role === "trainer") {
-//       return res.status(403).send("Trainers are not allowed to book sessions.");
-//     }
+    // Prevent trainers from booking
+    if (req.user.role && req.user.role === "trainer") {
+      return res.status(403).send("Trainers are not allowed to book sessions.");
+    }
 
-//     next(); // Allow the request to continue if user is authenticated and not a trainer
-//   } catch (err) {
-//     console.error("JWT validation failed:", err.message);
-//     return res.status(401).send("Invalid or expired token");
-//   }
-// };
+    next(); // Allow the request to continue if user is authenticated and not a trainer
+  } catch (err) {
+    console.error("JWT validation failed:", err.message);
+    return res.status(401).send("Invalid or expired token");
+  }
+};
 
-// module.exports = authenticateUser;
+module.exports = authenticateUser;
 
 
 // const jwt = require("jsonwebtoken");
@@ -131,24 +131,4 @@
 // module.exports = authorizeTrainer;
 
 
-const jwt = require('jsonwebtoken');
-
-const authenticateToken = (req, res, next) => {
-  const token = req.cookies.token; // Access token from cookies
-
-  if (!token) {
-    return res.status(403).json({ message: "Access denied. No token provided." });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY); // Verify the token
-    req.user = decoded; // Attach decoded user data to the request object
-    next(); // Continue to the next middleware or route
-  } catch (error) {
-    console.error("Invalid token:", error);
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
-};
-
-module.exports = authenticateToken;
 

@@ -81,68 +81,82 @@
       </div>
 
       <script>
-    let selectedDays = [];
+          document.getElementById("book-now").addEventListener("click", function() {
+          const preferredDay = document.querySelector('.card.selected[data-category="preferredDay"]')?.dataset.value;
+          const exerciseType = document.querySelector('.card.selected[data-category="exerciseType"]')?.dataset.value;
+          const timeSlot = document.querySelector('.card.selected[data-category="timeSlot"]')?.dataset.value;
+          const trainer = document.querySelector('.card.selected[data-category="trainer"]')?.dataset.value;
+          const sessionType = document.querySelector('.card.selected[data-category="sessionType"]')?.dataset.value;
 
-    document.getElementById("book-now").addEventListener("click", function() {
-        // Get selected options
-        const preferredDay = document.querySelector('.card.selected[data-category="preferredDay"]')?.dataset.value;
-        const exerciseType = document.querySelector('.card.selected[data-category="exerciseType"]')?.dataset.value;
-        const timeSlot = document.querySelector('.card.selected[data-category="timeSlot"]')?.dataset.value;
-        const trainer = document.querySelector('.card.selected[data-category="trainer"]')?.dataset.value;
-        const sessionType = document.querySelector('.card.selected[data-category="sessionType"]')?.dataset.value;
+          if (preferredDay && exerciseType && timeSlot && trainer && sessionType) {
+              const bookingData = { preferredDay, exerciseType, timeSlot, trainer, sessionType };
 
-        // Check if all categories have selections
-        if (preferredDay && exerciseType && timeSlot && trainer && sessionType) {
-            // Create an object with the selected values
-            const bookingData = {
-                preferredDay,
-                exerciseType,
-                timeSlot,
-                trainer,
-                sessionType
-            };
+              fetch("/book-session", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(bookingData)
+              })
+              .then(response => {
+                  if (response.ok) {
+                      alert("Booking successful!");
+                      window.location.reload(); // Reload to update booked slots
+                  } else if (response.status === 409) {
+                      alert("This session is already booked.");
+                      // Highlight the conflicting time slot in red
+                      document.querySelector(`.card[data-value="${timeSlot}"][data-category="timeSlot"]`).style.backgroundColor = "red";
+                  } else {
+                      alert("Error booking session. Please try again.");
+                  }
+              })
+              .catch(error => {
+                  console.error("Error booking session:", error);
+                  alert("Error booking session. Please try again.");
+              });
+          } else {
+              alert("Please select all options before booking.");
+          }
+      });
 
-            // Send POST request to backend API
-            fetch("/book-session", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(bookingData)
-            })
-            .then(response => response.text())
-            .then(data => {
-                // Handle response from server (e.g., show success message)
-                alert("Booking successful!");
-                window.location.href = "/"; // Redirect to home or desired page
-            })
-            .catch(error => {
-                console.error("Error booking session:", error);
-                alert("Error booking session. Please try again.");
-            });
-        } else {
-            alert("Please select all options before booking.");
-        }
-    });
 
-    // Add event listener to allow users to select cards
-    document.querySelectorAll(".card").forEach(card => {
-        card.addEventListener("click", function() {
-            const category = this.dataset.category;
 
-        // Deselect all other cards in the same category
-        document.querySelectorAll(`.card[data-category="${category}"]`).forEach(otherCard => {
-            otherCard.classList.remove("selected");
-        });
+      document.querySelectorAll('.card').forEach(card => {
+          card.addEventListener('click', function() {
+              const category = this.dataset.category;
 
-        // Select the clicked card
-        this.classList.add("selected");
-        });
-    });
-</script>
+              // Deselect all other cards in the same category
+              document.querySelectorAll(`.card[data-category="${category}"]`).forEach(otherCard => {
+                  otherCard.classList.remove('selected');
+              });
+
+              // Toggle the selected class on the clicked card
+              this.classList.add('selected');
+          });
+      });
 
 
 
 
+      window.onload = function() {
+      fetch('/booked-slots')
+          .then(response => response.json())
+          .then(bookings => {
+              bookings.forEach(booking => {
+                  const { timeSlot, preferredDay, trainer } = booking;
+                  const slotCard = document.querySelector(
+                      `.card[data-value="${timeSlot}"][data-category="timeSlot"]`
+                  );
+                  if (slotCard) {
+                      slotCard.classList.add('booked'); // Add a 'booked' class
+                      slotCard.style.backgroundColor = 'red'; // Mark as booked
+                      slotCard.style.pointerEvents = 'none'; // Disable clicking
+                  }
+              });
+          })
+          .catch(error => console.error("Error fetching booked slots:", error));
+  };
+
+      </script>
 </body>
 </html>

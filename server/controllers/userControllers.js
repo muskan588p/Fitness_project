@@ -128,16 +128,16 @@ const login = async (req, res) => {
       //   user:userData
       // })
 
-      res.cookie("token", token, options).json({
-        success: true,
-        message: "Login successful",
-        user: {
-          id: userData._id,
-          fullname: userData.fullname,
-          email: userData.email,
-          role: userData.role,
-        }
-      });
+      // res.cookie("token", token, options).json({
+      //   success: true,
+      //   message: "Login successful",
+      //   user: {
+      //     id: userData._id,
+      //     fullname: userData.fullname,
+      //     email: userData.email,
+      //     role: userData.role,
+      //   }
+      // });
 
       const ver=await jwt.verify(token, process.env.JWT_SECRET_KEY);
       console.log(ver);

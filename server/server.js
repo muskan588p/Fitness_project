@@ -19,6 +19,7 @@ const bookingSchema=require("./models/bookingModel");
 const cookieparser = require("cookie-parser");
 
 const authenticateToken = require('./middleware/jwtAuthMiddleware');
+const Booking = require('./models/bookingModel');
 // const cheatsheetRoute = require("./routes/cheatsheetRoute");
 
 // const storage=multer.diskStorage({
@@ -262,22 +263,31 @@ app.post("/apply", async (req, res) => {
 //     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
 //   }
 // });
-app.post("/book-session", async (req, res) => {
+app.post('/book-session', async (req, res) => {
   const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
 
-  const booking = new bookingSchema({
-    preferredDay,
-    exerciseType,
-    timeSlot,
-    trainer,
-    sessionType
-  });
-
-  try {  
-    const savedBooking = await booking.save();
-    res.send('<h1>Booking successful!</h1><a href="/">Go back</a>');
+  try {
+      // Save the booking
+      const newBooking = new Booking({ preferredDay, exerciseType, timeSlot, trainer, sessionType });
+      await newBooking.save();
+      res.status(200).json({ message: "Booking successful!" });
   } catch (error) {
-    res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
+      if (error.code === 11000) { // MongoDB duplicate key error
+          res.status(409).json({ message: "This session is already booked." });
+      } else {
+          console.error("Error creating booking:", error);
+          res.status(500).json({ message: "Internal server error." });
+      }
+  }
+});
+
+app.get('/booked-slots', async (req, res) => {
+  try {
+      const bookings = await Booking.find({});
+      res.status(200).json(bookings);
+  } catch (error) {
+      console.error("Error fetching booked slots:", error);
+      res.status(500).json({ message: "Internal server error." });
   }
 });
 
