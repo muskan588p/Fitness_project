@@ -45,6 +45,14 @@
           <div class="card available" data-value="7:00 AM - 8:00 AM" data-category="timeSlot">7:00 AM - 8:00 AM</div>
           <div class="card available" data-value="8:00 AM - 9:00 AM" data-category="timeSlot">8:00 AM - 9:00 AM</div>
           <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">9:00 AM - 10:00 AM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">10:00 AM - 11:00 AM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">11:00 AM - 12:00 AM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">12:00 AM - 1:00 PM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">1:00 PM - 2:00 PM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">2:00 PM - 3:00 PM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">3:00 PM - 4:00 PM</div>
+          <div class="card available" data-value="9:00 AM - 10:00 AM" data-category="timeSlot">4:00 PM - 5:00 PM</div>
+
         </div>
       </section>
     
@@ -120,26 +128,15 @@
     // Add event listener to allow users to select cards
     document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", function() {
-            // Get the category of the clicked card
             const category = this.dataset.category;
 
-            if (category === "preferredDay") {
-                // Special handling for "Preferred Day" where only 3 days can be selected
-                if (this.classList.contains("selected")) {
-                    this.classList.remove("selected");
-                    selectedDays = selectedDays.filter(day => day !== this.dataset.value);
-                } else {
-                    if (selectedDays.length < 3) {
-                        this.classList.add("selected");
-                        selectedDays.push(this.dataset.value);
-                    } else {
-                        alert("You can only select a maximum of 3 days.");
-                    }
-                }
-            } else {
-                // Allow selection for other categories
-                this.classList.toggle("selected");
-            }
+        // Deselect all other cards in the same category
+        document.querySelectorAll(`.card[data-category="${category}"]`).forEach(otherCard => {
+            otherCard.classList.remove("selected");
+        });
+
+        // Select the clicked card
+        this.classList.add("selected");
         });
     });
 </script>
