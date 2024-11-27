@@ -20,6 +20,7 @@ const cookieparser = require("cookie-parser");
 
 const authenticateToken = require('./middleware/jwtAuthMiddleware');
 const Booking = require('./models/bookingModel');
+const authenticateUser = require("./middleware/jwtAuthMiddleware");
 // const cheatsheetRoute = require("./routes/cheatsheetRoute");
 
 // const storage=multer.diskStorage({
@@ -263,6 +264,15 @@ app.post("/apply", async (req, res) => {
 //     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
 //   }
 // });
+<<<<<<< HEAD
+=======
+app.post('/book-session',authenticateUser ,async (req, res) => {
+  
+  console.log("Request body:", req.body); // Log incoming data
+  console.log("User data:", req.user);   // Log authenticated user data
+
+  const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
+>>>>>>> d41bafd4a2bb7c39fca8d40109236d7457801415
 
 ////////////////////////////////////////////////////////////////////////////////
 // app.post('/book-session', async (req, res) => {
@@ -285,6 +295,7 @@ app.post("/apply", async (req, res) => {
 
 app.post("/book-session", async (req, res) => {
   try {
+<<<<<<< HEAD
       const { preferredDay, exerciseType, timeSlot, trainer, sessionType, userId } = req.body;
 
        // Log the received data
@@ -295,6 +306,24 @@ app.post("/book-session", async (req, res) => {
       const existingBooking = await Booking.findOne({ timeSlot, preferredDay, trainer });
       if (existingBooking) {
           return res.status(400).json({ message: 'This session is already booked.' });
+=======
+      const email = req.user.email; // Extract email from authenticated user
+
+        // Ensure all required fields are present
+        if (!preferredDay || !exerciseType || !timeSlot || !trainer || !sessionType || !email) {
+            return res.status(400).send("All fields are required");
+      }
+      // Save the booking
+      const newBooking = new Booking({ preferredDay, exerciseType, timeSlot, trainer, sessionType });
+      await newBooking.save();
+      res.status(200).json({ message: "Booking successful!" });
+  } catch (error) {
+      if (error.code === 11000) { // MongoDB duplicate key error
+          res.status(409).json({ message: "This session is already booked." });
+      } else {
+          console.error("Error creating booking:", error);
+          res.status(500).json({ message: "Internal server error." });
+>>>>>>> d41bafd4a2bb7c39fca8d40109236d7457801415
       }
 
       // Create a new booking record
