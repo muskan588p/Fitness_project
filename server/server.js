@@ -263,23 +263,60 @@ app.post("/apply", async (req, res) => {
 //     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
 //   }
 // });
-app.post('/book-session', async (req, res) => {
-  const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
 
+////////////////////////////////////////////////////////////////////////////////
+// app.post('/book-session', async (req, res) => {
+//   const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
+
+//   try {
+//       // Save the booking
+//       const newBooking = new Booking({ preferredDay, exerciseType, timeSlot, trainer, sessionType });
+//       await newBooking.save();
+//       res.status(200).json({ message: "Booking successful!" });
+//   } catch (error) {
+//       if (error.code === 11000) { // MongoDB duplicate key error
+//           res.status(409).json({ message: "This session is already booked." });
+//       } else {
+//           console.error("Error creating booking:", error);
+//           res.status(500).json({ message: "Internal server error." });
+//       }
+//   }
+// });
+
+app.post("/book-session", async (req, res) => {
   try {
-      // Save the booking
-      const newBooking = new Booking({ preferredDay, exerciseType, timeSlot, trainer, sessionType });
-      await newBooking.save();
-      res.status(200).json({ message: "Booking successful!" });
-  } catch (error) {
-      if (error.code === 11000) { // MongoDB duplicate key error
-          res.status(409).json({ message: "This session is already booked." });
-      } else {
-          console.error("Error creating booking:", error);
-          res.status(500).json({ message: "Internal server error." });
+      const { preferredDay, exerciseType, timeSlot, trainer, sessionType, userId } = req.body;
+
+       // Log the received data
+       console.log("Booking data received:", req.body);
+
+
+      // Check if the same time slot is already booked
+      const existingBooking = await Booking.findOne({ timeSlot, preferredDay, trainer });
+      if (existingBooking) {
+          return res.status(400).json({ message: 'This session is already booked.' });
       }
+
+      // Create a new booking record
+      const newBooking = new Booking({
+          preferredDay,
+          exerciseType,
+          timeSlot,
+          trainer,
+          sessionType,
+          userId,
+      });
+
+      // Save the booking to the database
+      await newBooking.save();
+      
+      res.status(200).json({ message: 'Booking successful!' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error booking session. Please try again.' });
   }
 });
+
 
 app.get('/booked-slots', async (req, res) => {
   try {

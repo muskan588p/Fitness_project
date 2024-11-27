@@ -38,31 +38,31 @@ const signup = async (req, res) => {
     await gym_new_user.save();
     console.log("User successfully registered");
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { 
-          id: gym_new_user._id, 
-          email: gym_new_user.email ,
-          role: "user",
-      },
-      process.env.JWT_SECRET_KEY,
-      { 
-          expiresIn: "1h" 
-      }
-    );  
+  //   // Generate JWT token
+  //   const token = jwt.sign(
+  //     { 
+  //         id: gym_new_user._id, 
+  //         email: gym_new_user.email ,
+  //         role: "user",
+  //     },
+  //     process.env.JWT_SECRET_KEY,
+  //     { 
+  //         expiresIn: "1h" 
+  //     }
+  //   );  
 
-  console.log("Generated Token:", token);
+  // console.log("Generated Token:", token);
 
-  gym_new_user.token=token;
-  gym_new_user.password=undefined;   //server will not send password to the user-undefined
+  // gym_new_user.token=token;
+  // gym_new_user.password=undefined;   //server will not send password to the user-undefined
 
     // Render the login page with a success message
     // return res.status(201).render("login", { success: 1 });
-    // return res.status(201).redirect("/login?success=1");
-    res.status(201).json(gym_new_user)
+    return res.status(201).redirect("/login?success=1");
+    // res.status(201).json(gym_new_user)
 
   } catch (error) {
-    console.error("Error during signup:", error);
+    console.log("Error during signup:", error);
     return res.status(400).send("An error occurred during signup.");
   }
 };
@@ -75,8 +75,8 @@ const login = async (req, res) => {
 
     //validation
     if (!email || !password) {
-        res.status(400);
-        throw new Error("Please provide email and password");
+      res.status(400);
+      throw new Error("Please provide email and password");
     }
 
     let userData = await userModel.findOne({ email });
@@ -85,15 +85,11 @@ const login = async (req, res) => {
     // If not found in user database, check in trainer database
     if (!userData) {
       userData = await trainerModel.findOne({ email });
-
-      // If found in trainer database, assign role as 'trainer'
-      if (userData) {
-        role = "trainer";
-      }
+      if (userData) role = "trainer";
     }
 
     if (!userData) {
-      return res.status(401).send("user in not registered");
+      return res.status(401).send("User is not registered");
     }
 
     //validate password(match)
@@ -102,73 +98,47 @@ const login = async (req, res) => {
     if (isMatch && userData) {
         // Generate JWT token
       const token = jwt.sign(
-        { 
-            id: userData._id, 
-            email: userData.email ,
-            role,
+        {
+          id: userData._id,
+          email: userData.email,
+          role,
         },
         process.env.JWT_SECRET_KEY,
-        { 
-            expiresIn: "1h" 
-        }
-      );  
-      userData.token=token;
-      userData.password=undefined;
-      
+        { expiresIn: "1h" }
+      );
+
+      userData.password = undefined;
+
       console.log("Generated Token:", token);
 
-      //cookie
-      // const options={
-      //   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      //   httpOnly:true
-      // };
-      // res.status(200).cookie("token", token, options).json({
-      //   success:true,
-      //   token,
-      //   user:userData
-      // })
+      // Passing the token to the login page
+      // return res.render("login", {
 
-      // res.cookie("token", token, options).json({
-      //   success: true,
-      //   message: "Login successful",
+      //   token,
       //   user: {
-      //     id: userData._id,
       //     fullname: userData.fullname,
-      //     email: userData.email,
-      //     role: userData.role,
-      //   }
+      //     role,
+      //   },
       // });
 
-      const ver=await jwt.verify(token, process.env.JWT_SECRET_KEY);
-      console.log(ver);
-
-      req.session.user = { username: userData.fullname, role: role }; 
-       return res.redirect("/");
+      // Respond with JSON containing the token and user info
+      return res.status(200).json({
+        message: "Login successful",
+        token,
+        user: {
+          fullname: userData.fullname,
+          role,
+        },
+      });
     }
 
-    
-
-    // console.log("Generated Token:", token);
-
-    // Store user info in session
-    // req.session.user = { username: userData.fullname, role: role }; 
-
-    // return res.redirect("/");
-
-    // return res.status(200).json({
-    //     message: "Login successful",
-    //     token,
-    //     user: {
-    //       id: userdata._id,
-    //       fullname: userdata.fullname,
-    //       email: userdata.email,
-    //     },
-    //   });
-    } catch (error) {
-      console.error("Error during login:", error.message);
-      return res.status(500).json({ message: "An error occurred during login" });
-    }
+    res.status(401).send("Invalid email or password");
+  } catch (error) {
+    console.error("Error during login:", error.message);
+    res.status(500).send("An error occurred during login");
+  }
 };
+
 
 
 // Logout Handler
