@@ -102,6 +102,7 @@ const login = async (req, res) => {
           id: userData._id,
           email: userData.email,
           role,
+          user: { fullname: userData.fullname, role },
         },
         process.env.JWT_SECRET_KEY,
         { expiresIn: "1h" }

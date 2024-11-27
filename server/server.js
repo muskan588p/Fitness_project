@@ -28,7 +28,7 @@ const authenticateUser = require("./middleware/jwtAuthMiddleware");
 //         return cb(null,"./uploads");
 //     },  
 //     filename: function(req,file,cb){
-//         return cb(null, `${Date.now()}-${file.originalname}`);
+//         return cb(null, ${Date.now()}-${file.originalname});
 //     },
 // });
 
@@ -264,49 +264,14 @@ app.post("/apply", async (req, res) => {
 //     res.status(500).send('<h1>Error saving booking!</h1><a href="/">Try again</a>');
 //   }
 // });
-<<<<<<< HEAD
-=======
 app.post('/book-session',authenticateUser ,async (req, res) => {
   
   console.log("Request body:", req.body); // Log incoming data
   console.log("User data:", req.user);   // Log authenticated user data
 
   const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
->>>>>>> d41bafd4a2bb7c39fca8d40109236d7457801415
 
-////////////////////////////////////////////////////////////////////////////////
-// app.post('/book-session', async (req, res) => {
-//   const { preferredDay, exerciseType, timeSlot, trainer, sessionType } = req.body;
-
-//   try {
-//       // Save the booking
-//       const newBooking = new Booking({ preferredDay, exerciseType, timeSlot, trainer, sessionType });
-//       await newBooking.save();
-//       res.status(200).json({ message: "Booking successful!" });
-//   } catch (error) {
-//       if (error.code === 11000) { // MongoDB duplicate key error
-//           res.status(409).json({ message: "This session is already booked." });
-//       } else {
-//           console.error("Error creating booking:", error);
-//           res.status(500).json({ message: "Internal server error." });
-//       }
-//   }
-// });
-
-app.post("/book-session", async (req, res) => {
   try {
-<<<<<<< HEAD
-      const { preferredDay, exerciseType, timeSlot, trainer, sessionType, userId } = req.body;
-
-       // Log the received data
-       console.log("Booking data received:", req.body);
-
-
-      // Check if the same time slot is already booked
-      const existingBooking = await Booking.findOne({ timeSlot, preferredDay, trainer });
-      if (existingBooking) {
-          return res.status(400).json({ message: 'This session is already booked.' });
-=======
       const email = req.user.email; // Extract email from authenticated user
 
         // Ensure all required fields are present
@@ -323,29 +288,9 @@ app.post("/book-session", async (req, res) => {
       } else {
           console.error("Error creating booking:", error);
           res.status(500).json({ message: "Internal server error." });
->>>>>>> d41bafd4a2bb7c39fca8d40109236d7457801415
       }
-
-      // Create a new booking record
-      const newBooking = new Booking({
-          preferredDay,
-          exerciseType,
-          timeSlot,
-          trainer,
-          sessionType,
-          userId,
-      });
-
-      // Save the booking to the database
-      await newBooking.save();
-      
-      res.status(200).json({ message: 'Booking successful!' });
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error booking session. Please try again.' });
   }
 });
-
 
 app.get('/booked-slots', async (req, res) => {
   try {
@@ -356,6 +301,69 @@ app.get('/booked-slots', async (req, res) => {
       res.status(500).json({ message: "Internal server error." });
   }
 });
+
+// app.get('/get-user-info', async (req, res) => {
+//   try {
+//     const token = req.headers['authorization']?.split(' ')[1];
+
+//     if (!token) {
+//       return res.status(401).json({ message: 'No token provided' });
+//     }
+
+//     // Verify token
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+//     // Retrieve user data from the database
+//     const user = await userModel.findById(decoded.id);
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     // Return the user data (e.g., fullname)
+//     res.status(200).json({
+//       user: {
+//         fullname: user.fullname,
+//         email: user.email,
+//         role: decoded.role,
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Error verifying token:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
+// Backend route for fetching user information
+const getUserInfo = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1]; // Extract the token
+
+    if (!token) {
+      return res.status(401).send("Unauthorized");
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    // Find the user by ID (based on the decoded token)
+    const user = await userModel.findById(decoded.id).select("-password"); // Exclude password
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // Send the user info back
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    res.status(500).send("An error occurred");
+  }
+};
+
+// Define the route
+app.get('/get-user-info', getUserInfo);
+
+
 
 
 app.listen(port, () => {
