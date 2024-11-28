@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const trainerSchema = new mongoose.Schema({
+const applicationSchema = new mongoose.Schema({
     fullname:{
         type : String , 
         required : [ true , "please add your name"],
@@ -35,10 +35,6 @@ const trainerSchema = new mongoose.Schema({
         type : String,
         required : [ true , "please add your city"],
     },
-    postalcode:{
-        type : Number,
-        required : [ true , "please add your postalcode"],
-    },
     // file:{
     //     type: file,
     //     required: [true] ,
@@ -47,5 +43,5 @@ const trainerSchema = new mongoose.Schema({
 {
     timestamps : true ,
 });
-const application = new mongoose.model("application" , trainerSchema);
+const application = new mongoose.model("application" , applicationSchema);
 module.exports=application;

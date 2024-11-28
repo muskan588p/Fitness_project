@@ -8,7 +8,8 @@ const hbs = require("hbs");
 // const port = process.env.PORT || 5000;
 const connectDb = require("./config/dbConnection");
 const userModel = require("./models/UserSignupModel");
-const trainerModel=require("./models/applicationModel");
+const applicationModel=require("./models/applicationModel");
+const trainerModel=require("./models/trainerModel");
 const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 8000;
@@ -115,21 +116,19 @@ app.get("/book", (req, res) => {
 // app.post("/apply", upload.single("file"), async (req, res) => {
 app.post("/apply", async (req, res) => {
   try {
-    const trainer_user = new trainerModel({
+    const application_user = new applicationModel({
       fullname: req.body.fullname,
       email: req.body.email,
       phonenumber: req.body.phonenumber,
       dob: req.body.dob,
       gender: req.body.gender,
       address: req.body.address,
-      country:req.body.country,
       state:req.body.state,
       city:req.body.city,
-      postalcode:req.body.postalcode,
     //   file:req.body.file,
     });
 
-    const registered = await trainer_user.save();
+    await application_user.save();
     res.status(201).redirect("/");
     console.log("new trainer applied");
 
