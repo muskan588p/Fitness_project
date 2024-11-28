@@ -402,8 +402,9 @@
     };
 
 
-    function accessCheatsheet() {
+  function accessCheatsheet() {
   const token = localStorage.getItem("auth_token");
+  console.log("Stored token:", token);
 
   if (!token) {
     alert("No token found. Please log in first.");
@@ -411,33 +412,41 @@
   }
 
   // Decode token to check user role
-  const decodedToken = jwt_decode(token);
-  const role = decodedToken.user.role;  // Ensure this is extracting the correct value
+  try {
+    const decodedToken = jwt_decode(token);
+    console.log("Decoded Token:", decodedToken);
 
-  if (role !== "trainer") {
-    alert("Access denied. Only trainers can access this section.");
-    return;
-  }
- 
+    const role = decodedToken.user.role;  // Ensure this is extracting the correct value
 
-  // Send request with token in Authorization header if user is a trainer
-  fetch("http://localhost:5001/cheatsheet", {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${token}`, // Attach the token here
-    },
-  })
-  .then(response => {
-    if (response.status === 200) {
-      window.location.href = "/cheatsheet"; // Navigate to cheatsheet if successful
-    } else {
-      alert("Access denied or other error.");
+    if (role !== "trainer") {
+      alert("Access denied. Only trainers can access this section.");
+      return;
     }
-  })
-  .catch(error => {
-    console.error("Error accessing cheatsheet:", error);
-  });
+
+    // Send request with token in Authorization header if user is a trainer
+    fetch("http://localhost:5001/cheatsheet", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`, // Attach the token here
+      },
+    })
+    .then(response => {
+      if (response.ok) {  // Or response.status === 200
+        window.location.href = "/cheatsheet"; // Navigate to cheatsheet if successful
+      } else {
+        alert("Access denied or other error. Status: " + response.status);
+      }
+    })
+    .catch(error => {
+      console.error("Error accessing cheatsheet:", error);
+    });
+
+  } catch (error) {
+    console.error("Token decoding error:", error);
+    alert("Invalid token or token decoding error.");
+  }
 }
+
 
 
   </script>

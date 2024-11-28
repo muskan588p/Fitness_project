@@ -225,11 +225,14 @@ app.get('/booked-slots', async (req, res) => {
 
 
 const authenticateUser = async (req, res, next) => {
-  const token = req.header("authorization");
+  const token = req.header("Authorization");
+  // const token = req.header("Authorization");
+console.log("Authorization Header:", token);
+
 
   if (!token) {
-    console.error("No token provided.");
-    return res.status(401).send("Unauthorized access. No token provided.");
+    // return res.status(401).send("Unauthorized access. No token provided.");
+    return res.status(400).render("cheatsheet");
   }
 
   const jwttoken = token.startsWith("Bearer ") ? token.split(" ")[1] : token.trim();
