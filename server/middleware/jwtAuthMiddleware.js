@@ -59,7 +59,6 @@ const jwt = require("jsonwebtoken");
 
 const authenticateUser = (req, res, next) => {
   const authorization = req.headers.authorization;
-  console.log("Authenticating user...");
 
   
 
@@ -81,10 +80,6 @@ const authenticateUser = (req, res, next) => {
     req.user = decodedToken; // Attach the decoded user information to the request object
     console.log("User authenticated:", decodedToken);
 
-    // Prevent trainers from booking
-    if (req.user.role === "trainer") {
-      return res.status(403).send("Trainers are not allowed to book sessions.");
-    }
 
     next(); // Allow the request to continue if user is authenticated and not a trainer
   } catch (err) {

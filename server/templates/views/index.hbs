@@ -258,7 +258,8 @@
       </div>
     </div>
     <div class="trainer__btn">
-      <button class="btn" onclick="window.location.href ='/cheatsheet'">Gym Data</button>
+      {{!-- <button class="btn" onclick="window.location.href ='/cheatsheet'">Gym Data</button> --}}
+      <button class="btn" onclick=accessCheatsheet()>Gym Data</button>
     </div>
   </section>
 
@@ -399,6 +400,46 @@
         document.getElementById("navbar-user").innerHTML = `Welcome, ${userName}`;
       }
     };
+
+
+    function accessCheatsheet() {
+  const token = localStorage.getItem("auth_token");
+
+  if (!token) {
+    alert("No token found. Please log in first.");
+    return;
+  }
+
+  // Decode token to check user role
+  const decodedToken = jwt_decode(token);
+  const role = decodedToken.user.role;  // Ensure this is extracting the correct value
+
+  if (role !== "trainer") {
+    alert("Access denied. Only trainers can access this section.");
+    return;
+  }
+ 
+
+  // Send request with token in Authorization header if user is a trainer
+  fetch("http://localhost:5001/cheatsheet", {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`, // Attach the token here
+    },
+  })
+  .then(response => {
+    if (response.status === 200) {
+      window.location.href = "/cheatsheet"; // Navigate to cheatsheet if successful
+    } else {
+      alert("Access denied or other error.");
+    }
+  })
+  .catch(error => {
+    console.error("Error accessing cheatsheet:", error);
+  });
+}
+
+
   </script>
 
 

@@ -18,9 +18,12 @@ const bookingSchema=require("./models/bookingModel");
 // const authorizeTrainer = require("./middleware/jwtAuthMiddleware");
 const cookieparser = require("cookie-parser");
 
-const authenticateToken = require('./middleware/jwtAuthMiddleware');
 const Booking = require('./models/bookingModel');
 const authenticateUser = require("./middleware/jwtAuthMiddleware");
+
+// const cheatsheetRoutes = require('./routes/cheatsheet');
+// app.use(cheatsheetRoutes);
+
 // const cheatsheetRoute = require("./routes/cheatsheetRoute");
 
 // const storage=multer.diskStorage({
@@ -83,114 +86,6 @@ app.get("/signup", (req, res) => {
   res.render("signup");
 });
 
-
-//signup route
-// app.post("/signup", async (req, res) => {
-//   try {
-//     const pass = req.body.password.trim();
-//     const cpass = req.body.confirmpassword.trim();
-
-//     if (pass === cpass) {
-//       const hashedPass = await bcrypt.hash(pass, 10);
-
-//       const gym_new_user = new userModel({
-//         fullname: req.body.fullname,
-//         email: req.body.email,
-//         phonenumber: req.body.phonenumber,
-//         age: req.body.age,
-//         gender: req.body.gender,
-//         password: hashedPass,
-//       });
-
-//       const registered = await gym_new_user.save();
-//       //   res.redirect('/login');
-//       //   res.status(201).render("login");
-//       // res.redirect("/login?success=1");
-//       res.status(201).render("login", { success: 1 });
-
-//       console.log("User successfully registered");
-//     } else {
-//       res.send("password are not matching");
-//     }
-//   } catch (error) {
-//     res.status(400).send(error);
-//   }
-// });
-
-// //login route
-// // app.post("/login", async (req, res) => {
-// //   try {
-// //     const email = req.body.email;
-// //     const password = req.body.password;
-
-// //     const userdata = await userModel.findOne({ email: email });
-
-// //     bcrypt.compare(password, userdata.password, function (err, isMatch) {
-// //       if (isMatch === true) {
-// //         req.session.user = { username: userdata.fullname }; // Store username in the session// res.status(201).render("index");
-        
-// //         console.log("Login Successful");
-// //         res.status(201).redirect("/");
-// //       } else {
-// //         res.status(401).send("Invalid email or password");
-// //         // res.send("Invalid Login details");
-// //       }
-// //     });
-// //   } catch (error) {
-// //     res.status(400).send("invalid login details");
-// //   }
-// // });
-
-// //login route
-// app.post("/login", async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-
-//     const userdata = await userModel.findOne({ email });
-
-//     if (!userdata) {
-//       return res.status(401).send("Invalid email or password");
-//     }
-
-//     const isMatch = await bcrypt.compare(password, userdata.password);
-
-//     if (!isMatch) {
-//       return res.status(401).send("Invalid email or password");
-//     }
-
-//     const token = userdata.generateToken();
-//     console.log(token);
-
-//     req.session.user = { username: userdata.fullname };
-
-//     // res.status(200).json({
-//     //   message: "Login successful",
-//     //   token,
-//     //   user: {
-//     //     id: userdata._id,
-//     //     fullname: userdata.fullname,
-//     //     email: userdata.email,
-//     //   },
-//     // })
-//     return res.redirect("/");
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("An error occurred during login.");
-//   }
-// });
-
-
-// //logout route
-// app.get("/logout", (req, res) => {
-//   req.session.destroy((err) => {
-//     if (err) {
-//       console.error("Error during logout:", err);
-//       return res.status(500).send("Error logging out.");
-//     }
-//     res.redirect("/");
-//   });
-// });
-
 app.post("/signup", signup); // signup controller
 app.post("/login", login);   // login controller
 app.get("/logout", logout);  // logout controller
@@ -212,14 +107,10 @@ app.get("/book", (req, res) => {
   res.render("book");
 });
 
-app.get("/cheatsheet", (req, res) => {
-  res.status(200).render("cheatsheet");
-});
-
-
-// app.get("/cheatsheet", authorizeTrainer, (req, res) => {
-//   res.render("cheatsheet");
+// app.get("/cheatsheet", (req, res) => {
+//   res.status(200).render("cheatsheet");
 // });
+
 
 // app.post("/apply", upload.single("file"), async (req, res) => {
 app.post("/apply", async (req, res) => {
@@ -363,6 +254,35 @@ const getUserInfo = async (req, res) => {
 // Define the route
 app.get('/get-user-info', getUserInfo);
 
+// Middleware to verify token
+const verifyToken = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  console.log(authorization);
+
+  if (!authorization) {
+    return res.status(401).send("Unauthorized access. No token provided.");
+  }
+
+  const token = authorization.split(" ")[1];
+  console.log("Extracted token:", token);
+  
+  try {
+    // Verify the token using the secret/private key
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = decodedToken; // Attach the decoded user information to the request object
+    console.log("User authenticated:", decodedToken);
+
+
+    next(); // Allow the request to continue if user is authenticated and not a trainer
+  } catch (err) {
+    console.error("JWT validation failed:", err.message);
+    return res.status(401).send("Invalid or expired token");
+  }
+};
+
+app.get("/cheatsheet",verifyToken, (req, res) => {
+  res.status(200).render("cheatsheet");
+});
 
 
 
