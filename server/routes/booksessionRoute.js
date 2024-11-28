@@ -6,10 +6,10 @@ const { signup, login, logout } = require("./controllers/userControllers");
 
 const router = express.Router();
 
-router.post("/book-session", authenticateUser, async (req, res) => {
+router.post("/book-session", async (req, res) => {
   try {
 
-    console.log(req.userData.email);
+    //console.log(req.userData.email);
     const bookingData = new bookingSchema({
       preferredDay: req.body.preferredDay,
       exerciseType: req.body.exerciseType,
@@ -17,7 +17,7 @@ router.post("/book-session", authenticateUser, async (req, res) => {
       trainer: req.body.trainer,
       sessionType: req.body.sessionType,
       // userId: req.user.id // Storing the user who is booking the session
-      email: req.userData.email  // Store the email of the user who is booking the session
+     // email: req.userData.email  // Store the email of the user who is booking the session
     });
 
     const bookedSession = await bookingData.save();
