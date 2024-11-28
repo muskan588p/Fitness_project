@@ -19,7 +19,7 @@ const bookingSchema=require("./models/bookingModel");
 const cookieparser = require("cookie-parser");
 
 const Booking = require('./models/bookingModel');
-const authenticateUser = require("./middleware/jwtAuthMiddleware");
+// const authenticateUser = require("./middleware/jwtAuthMiddleware");
 
 // const cheatsheetRoutes = require('./routes/cheatsheet');
 // app.use(cheatsheetRoutes);
@@ -193,94 +193,83 @@ app.get('/booked-slots', async (req, res) => {
   }
 });
 
-// app.get('/get-user-info', async (req, res) => {
-//   try {
-//     const token = req.headers['authorization']?.split(' ')[1];
 
-//     if (!token) {
-//       return res.status(401).json({ message: 'No token provided' });
-//     }
+// // Middleware to verify token
+// const verifyToken = (req, res, next) => {
+//   const authorization = req.headers.authorization;
+//   console.log(authorization);
 
-//     // Verify token
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-//     // Retrieve user data from the database
-//     const user = await userModel.findById(decoded.id);
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     // Return the user data (e.g., fullname)
-//     res.status(200).json({
-//       user: {
-//         fullname: user.fullname,
-//         email: user.email,
-//         role: decoded.role,
-//       },
-//     });
-//   } catch (error) {
-//     console.error("Error verifying token:", error);
-//     res.status(500).json({ message: "Server error" });
+//   if (!authorization) {
+//     return res.status(401).send("Unauthorized access. No token provided.");
 //   }
-// });
 
-// Backend route for fetching user information
-const getUserInfo = async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1]; // Extract the token
+//   const token = authorization.split(" ")[1];
+//   console.log("Extracted token:", token);
+  
+//   try {
+//     // Verify the token using the secret/private key
+//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+//     req.user = decodedToken; // Attach the decoded user information to the request object
+//     console.log("User authenticated:", decodedToken);
 
-    if (!token) {
-      return res.status(401).send("Unauthorized");
-    }
 
-    // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+//     next(); // Allow the request to continue if user is authenticated and not a trainer
+//   } catch (err) {
+//     console.error("JWT validation failed:", err.message);
+//     return res.status(401).send("Invalid or expired token");
+//   }
+// };
 
-    // Find the user by ID (based on the decoded token)
-    const user = await userModel.findById(decoded.id).select("-password"); // Exclude password
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
 
-    // Send the user info back
-    res.status(200).json({ user });
-  } catch (error) {
-    console.error("Error fetching user info:", error);
-    res.status(500).send("An error occurred");
-  }
-};
+const authenticateUser = async (req, res, next) => {
+  const token = req.header("authorization");
 
-// Define the route
-app.get('/get-user-info', getUserInfo);
-
-// Middleware to verify token
-const verifyToken = (req, res, next) => {
-  const authorization = req.headers.authorization;
-  console.log(authorization);
-
-  if (!authorization) {
+  if (!token) {
+    console.error("No token provided.");
     return res.status(401).send("Unauthorized access. No token provided.");
   }
 
-  const token = authorization.split(" ")[1];
-  console.log("Extracted token:", token);
-  
+  const jwttoken = token.startsWith("Bearer ") ? token.split(" ")[1] : token.trim();
+  console.log("Extracted token:", jwttoken);
+
   try {
-    // Verify the token using the secret/private key
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.user = decodedToken; // Attach the decoded user information to the request object
-    console.log("User authenticated:", decodedToken);
+    const decodedToken = jwt.verify(jwttoken, process.env.JWT_SECRET_KEY);
+    console.log("Decoded Token:", decodedToken);
 
+    req.user = decodedToken;
 
-    next(); // Allow the request to continue if user is authenticated and not a trainer
+    if (req.originalUrl.includes("cheatsheet")) {
+      console.log("Checking trainer collection for email:", decodedToken.email);
+      const trainerData = await trainerModel.findOne({ email: decodedToken.email, role: "trainer" });
+
+      if (!trainerData) {
+        console.error("Trainer not found or role mismatch.");
+        return res.status(403).send("Access denied. Trainer not found or invalid role.");
+      }
+
+      console.log("Trainer validated:", trainerData);
+    } else {
+      console.log("Checking user collection for email:", decodedToken.email);
+      const userData = await userModel.findOne({ email: decodedToken.email });
+
+      if (!userData) {
+        console.error("User not found.");
+        return res.status(404).send("User not found.");
+      }
+
+      console.log("User validated:", userData);
+    }
+
+    next();
   } catch (err) {
     console.error("JWT validation failed:", err.message);
-    return res.status(401).send("Invalid or expired token");
+    return res.status(401).send(`Invalid or expired token: ${err.message}`);
   }
 };
 
-app.get("/cheatsheet",verifyToken, (req, res) => {
+
+
+app.get("/cheatsheet",authenticateUser, (req, res) => {
   res.status(200).render("cheatsheet");
 });
 
