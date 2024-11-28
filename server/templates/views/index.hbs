@@ -1,378 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    <link rel="stylesheet" href="../../styles.css" />
-    <title>Web Design Mastery | FitnessPoint</title>
-  </head>
-  <body>
-     <header>
-      <nav>
-        <div class="nav__header">
-          <div class="nav__logo">
-            <a href="#">
-              <img src="../../logo-white.png" alt="logo" class="logo-white" />
-              <img src="../../logo-dark.png" alt="logo" class="logo-dark" />
-            </a>
-          </div>
-          <div class="nav__menu__btn" id="menu-btn">
-            <i class="ri-menu-line"></i>
-          </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+  <link rel="stylesheet" href="../../styles.css" />
+  <title>Web Design Mastery | FitnessPoint</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a href="#">
+            <img src="../../logo-white.png" alt="logo" class="logo-white" />
+            <img src="../../logo-dark.png" alt="logo" class="logo-dark" />
+          </a>
         </div>
-        <ul class="nav__links" id="nav-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#service">Services</a></li>
-          <li><a href="#class">Classes</a></li>
-          <li><a href="#contact">Blog</a></li>
-          {{!-- <li><a href="#">Join Now</a></li> --}}
-        </ul>
-        <div>
-          <li id="navbar-user">Welcome, Guest</li>
-        </div>
-        <div class="nav__btns">
-          {{!-- <button class="btn" onclick="window.location.href='/login'">Login</button> --}}
-          {{#if username}}
-            <span class="welcome-text">Welcome, {{username}}</span>
-            <button class="btn" onclick="window.location.href='/logout'">Logout</button>
-          {{else}}
-            <button class="btn" onclick="window.location.href='/login'">Login</button>
-          {{/if}}
-        </div>
-      </nav>
-      
-      <div class="section__container header__container" id="home">
-        <div class="header__content">
-          <h1>DON'T STOP TILL YOUR SUCCESS!</h1>
-          <h2>GET FIT TO HAPPY</h2>
-          <p>
-            Unlock your full potential with our expert training and
-            state-of-the-art facilities. Every step you take brings you closer
-            to a healthier, happier you. Let's make fitness a lifestyle!
-          </p>
-          <div class="header__btn">
-            <button class="btn">Explore More</button>
-          </div>
-        </div>
-        <div class="header__image">
-          <img src="../../about.png" alt="header" />
+        <div class="nav__menu__btn" id="menu-btn">
+          <i class="ri-menu-line"></i>
         </div>
       </div>
-    </header>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#service">Services</a></li>
+        <li><a href="#class">Classes</a></li>
+        <li><a href="#contact">Blog</a></li>
+        {{!-- <li><a href="#">Join Now</a></li> --}}
+      </ul>
+      <div>
+        <li id="navbar-user">Welcome, Guest</li>
+      </div>
+      <div class="nav__btns">
+        {{!-- <button class="btn" onclick="window.location.href='/login'">Login</button> --}}
+        {{!-- {{#if username}}
+        <h1>dsjfbkds</h1>
+        <span class="welcome-text">Welcome, {{username}}</span>
+        <button class="btn" id="logoutBtn" onclick="window.location.href='/logout'">Logout</button>
+        {{else}}
+        <h1>jbkfknjv</h1>
+        <button class="btn" id="loginBtn" onclick="window.location.href='/login'">Login</button>
+        {{/if}} --}}
+        <button class="btn" id="logoutBtn" style="display: none;" onclick="window.location.href='/logout'">Logout</button>
+        <button class="btn" id="loginBtn" style="display: none;" onclick="window.location.href='/login'">Login</button>
+      </div>
+    </nav>
 
-
-    <div class="about" id="about">
-      <div class="section__container about__container">
-        <div class="about__image">
-          <img src="../../header.png" alt="about" />
+    <div class="section__container header__container" id="home">
+      <div class="header__content">
+        <h1>DON'T STOP TILL YOUR SUCCESS!</h1>
+        <h2>GET FIT TO HAPPY</h2>
+        <p>
+          Unlock your full potential with our expert training and
+          state-of-the-art facilities. Every step you take brings you closer
+          to a healthier, happier you. Let's make fitness a lifestyle!
+        </p>
+        <div class="header__btn">
+          <button class="btn">Explore More</button>
         </div>
-        <div class="about__content">
-          <h2 class="section__header">Ready To Make A Change?</h2>
+      </div>
+      <div class="header__image">
+        <img src="../../about.png" alt="header" />
+      </div>
+    </div>
+  </header>
+
+
+  <div class="about" id="about">
+    <div class="section__container about__container">
+      <div class="about__image">
+        <img src="../../header.png" alt="about" />
+      </div>
+      <div class="about__content">
+        <h2 class="section__header">Ready To Make A Change?</h2>
+        <p>
+          Taking the first step towards a healthier, stronger you can be the
+          most challenging part of the journey, but it's also the most
+          rewarding. Whether you're a beginner or a seasoned athlete, our
+          personalized training programs are designed to help you reach your
+          goals faster and more efficiently.
+        </p>
+        <p>
+          With our motivating trainers, energizing classes, and
+          state-of-the-art equipment, you'll have everything you need to stay
+          committed and see real results.
+        </p>
+        <h3 id="sessionhd" style="display: none;">Please login to book a session.........</h3>
+        <button class="btn" id="startedBtn" style="display: none;" onclick="window.location.href='/book'">Get Started</button>
+        {{!-- <h3>Please login to book a session.........</h3>
+        {{#ifEquals role "user"}}
+        <div class="about__btn">
+          <button class="btn" onclick="window.location.href='/book'">Get Started</button>
+        </div>
+        {{/ifEquals}} --}}
+      </div>
+    </div>
+  </div>
+
+  <section class="service" id="service">
+    <div class="section__container service__container">
+      <h2 class="section__header">Services We Provide</h2>
+      <div class="service__grid">
+        <div class="service__card">
+          <span>01</span>
+          <h4>Fitness Training</h4>
           <p>
-            Taking the first step towards a healthier, stronger you can be the
-            most challenging part of the journey, but it's also the most
-            rewarding. Whether you're a beginner or a seasoned athlete, our
-            personalized training programs are designed to help you reach your
-            goals faster and more efficiently.
+            Our fitness training programs are tailored to help you build
+            strength, improve endurance, and achieve your personal fitness
+            goals.
           </p>
+        </div>
+        <div class="service__card">
+          <span>02</span>
+          <h4>Yoga</h4>
           <p>
-            With our motivating trainers, energizing classes, and
-            state-of-the-art equipment, you'll have everything you need to stay
-            committed and see real results.
+            Perfect for all levels, our sessions focus on improving
+            flexibility, balance, and mental clarity while helping you manage
+            stress.
           </p>
-          <h3>Please login to book a session.........</h3>
-          {{#ifEquals role "user"}}
-            <div class="about__btn">
-              <button class="btn" onclick="window.location.href='/book'">Get Started</button>
-            </div>
-          {{/ifEquals}}
+        </div>
+        <div class="service__card">
+          <span>03</span>
+          <h4>Gymnastics</h4>
+          <p>
+            Our gymnastics classes are designed to boost coordination,
+            flexibility, and core strength through a series of fun and
+            challenging exercises.
+          </p>
+        </div>
+        <div class="service__card">
+          <span>04</span>
+          <h4>Karate</h4>
+          <p>
+            Suitable for all ages and skill levels, our martial arts program
+            emphasizes technique, respect, and personal growth while building
+            confidence.
+          </p>
+        </div>
+        <div class="service__image">
+          <img src="../../service.png" alt="service" />
         </div>
       </div>
     </div>
+  </section>
 
-    <section class="service" id="service">
-      <div class="section__container service__container">
-        <h2 class="section__header">Services We Provide</h2>
-        <div class="service__grid">
-          <div class="service__card">
-            <span>01</span>
-            <h4>Fitness Training</h4>
-            <p>
-              Our fitness training programs are tailored to help you build
-              strength, improve endurance, and achieve your personal fitness
-              goals.
-            </p>
+  <section class="popular" id="class">
+    <div class="section__container popular__container">
+      <h2 class="section__header">What Do You Want To Join Today?</h2>
+      <div class="popular__grid">
+        <div class="popular__card">
+          <div>
+            <h4>Cardio Strength</h4>
+            <p>Full-body workout with cardio</p>
           </div>
-          <div class="service__card">
-            <span>02</span>
-            <h4>Yoga</h4>
-            <p>
-              Perfect for all levels, our sessions focus on improving
-              flexibility, balance, and mental clarity while helping you manage
-              stress.
-            </p>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Weight Training</h4>
+            <p>Build muscle strength</p>
           </div>
-          <div class="service__card">
-            <span>03</span>
-            <h4>Gymnastics</h4>
-            <p>
-              Our gymnastics classes are designed to boost coordination,
-              flexibility, and core strength through a series of fun and
-              challenging exercises.
-            </p>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Yoga for Flexibility</h4>
+            <p>Improve flexibility and relax</p>
           </div>
-          <div class="service__card">
-            <span>04</span>
-            <h4>Karate</h4>
-            <p>
-              Suitable for all ages and skill levels, our martial arts program
-              emphasizes technique, respect, and personal growth while building
-              confidence.
-            </p>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>HIIT</h4>
+            <p>Short bursts of intense exercise</p>
           </div>
-          <div class="service__image">
-            <img src="../../service.png" alt="service" />
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Personal Training</h4>
+            <p>Customized workout plans</p>
           </div>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Group Fitness Classes</h4>
+            <p>Stay motivated and have fun</p>
+          </div>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Boxing Training</h4>
+            <p>Enhance agility and stamina</p>
+          </div>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Pilates Core Workout</h4>
+            <p>Strengthen your core</p>
+          </div>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
+        </div>
+        <div class="popular__card">
+          <div>
+            <h4>Spin Class</h4>
+            <p>High-energy cycling sessions</p>
+          </div>
+          <span>
+            <i class="ri-arrow-right-fill"></i>
+          </span>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="popular" id="class">
-      <div class="section__container popular__container">
-        <h2 class="section__header">What Do You Want To Join Today?</h2>
-        <div class="popular__grid">
-          <div class="popular__card">
-            <div>
-              <h4>Cardio Strength</h4>
-              <p>Full-body workout with cardio</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Weight Training</h4>
-              <p>Build muscle strength</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Yoga for Flexibility</h4>
-              <p>Improve flexibility and relax</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>HIIT</h4>
-              <p>Short bursts of intense exercise</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Personal Training</h4>
-              <p>Customized workout plans</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Group Fitness Classes</h4>
-              <p>Stay motivated and have fun</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Boxing Training</h4>
-              <p>Enhance agility and stamina</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Pilates Core Workout</h4>
-              <p>Strengthen your core</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-          <div class="popular__card">
-            <div>
-              <h4>Spin Class</h4>
-              <p>High-energy cycling sessions</p>
-            </div>
-            <span>
-              <i class="ri-arrow-right-fill"></i>
-            </span>
-          </div>
-        </div>
+
+  <section class="section__container mentor__container">
+    <h2 class="section__header">Having Your Own Coach And Mentor</h2>
+    <div class="mentor__grid">
+      <div class="mentor__card">
+        <img src="../../mentor-1.jpg" alt="mentor" />
+        <h4>DAVID WILLIAMS</h4>
+        <p>Body Builder Coach</p>
       </div>
-    </section>
-
-
-    <section class="section__container mentor__container">
-      <h2 class="section__header">Having Your Own Coach And Mentor</h2>
-      <div class="mentor__grid">
-        <div class="mentor__card">
-          <img src="../../mentor-1.jpg" alt="mentor" />
-          <h4>DAVID WILLIAMS</h4>
-          <p>Body Builder Coach</p>
-        </div>
-        <div class="mentor__card">
-          <img src="../../mentor-2.jpg" alt="mentor" />
-          <h4>ROSY RIVERA</h4>
-          <p>Cardio Coach</p>
-        </div>
-        <div class="mentor__card">
-          <img src="../../mentor-3.jpg" alt="mentor" />
-          <h4>MATT STONIE</h4>
-          <p>Fitness Coach</p>
-        </div>
+      <div class="mentor__card">
+        <img src="../../mentor-2.jpg" alt="mentor" />
+        <h4>ROSY RIVERA</h4>
+        <p>Cardio Coach</p>
       </div>
-      <div class="trainer__btn">
-        <button class="btn" onclick="window.location.href ='/cheatsheet'">Gym Data</button>
+      <div class="mentor__card">
+        <img src="../../mentor-3.jpg" alt="mentor" />
+        <h4>MATT STONIE</h4>
+        <p>Fitness Coach</p>
       </div>
-    </section>
+    </div>
+    <div class="trainer__btn">
+      <button class="btn" onclick="window.location.href ='/cheatsheet'">Gym Data</button>
+    </div>
+  </section>
 
-    <section class="banner" id="contact">
-      <div class="banner__content">
-        <h2>THE BEST TRAINERS OUT THERE</h2>
-        <p>ARE YOU A TRAINER?</p>
-        <button class="btn apply-btn" onclick="window.location.href='/apply'">Apply Now</button>
+  <section class="banner" id="contact">
+    <div class="banner__content">
+      <h2>THE BEST TRAINERS OUT THERE</h2>
+      <p>ARE YOU A TRAINER?</p>
+      <button class="btn apply-btn" onclick="window.location.href='/apply'">Apply Now</button>
+    </div>
+    <div class="banner__image">
+      <img src="../../banner.png" alt="banner" />
+    </div>
+  </section>
+
+  <section class="footer">
+    <div class="section__container footer__container">
+      <div class="footer__col">
+        <a href="#" class="footer__logo">
+          <img src="../../logo-white.png" alt="logo" />
+        </a>
+        <ul class="footer__links">
+          <li>
+            <a href="#">
+              <span><i class="ri-phone-line"></i></span> +91 0987654321
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span><i class="ri-map-pin-line"></i></span> Chandigarh India
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span><i class="ri-mail-line"></i></span> info@fitnesspoint.gmail.com
+            </a>
+          </li>
+        </ul>
       </div>
-      <div class="banner__image">
-        <img src="../../banner.png" alt="banner" />
+      <div class="footer__col">
+        <h4>Quick Links</h4>
+        <ul class="footer__links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Classes</a></li>
+          <li><a href="#">Gallery</a></li>
+          <li><a href="#">Membership</a></li>
+        </ul>
       </div>
-    </section>
-
-    <section class="footer">
-      <div class="section__container footer__container">
-        <div class="footer__col">
-          <a href="#" class="footer__logo">
-            <img src="../../logo-white.png" alt="logo" />
-          </a>
-          <ul class="footer__links">
-            <li>
-              <a href="#">
-                <span><i class="ri-phone-line"></i></span> +91 0987654321
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span><i class="ri-map-pin-line"></i></span> Chandigarh India
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span><i class="ri-mail-line"></i></span> info@fitnesspoint.gmail.com
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Quick Links</h4>
-          <ul class="footer__links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Classes</a></li>
-            <li><a href="#">Gallery</a></li>
-            <li><a href="#">Membership</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Gym Hours</h4>
-          <ul class="footer__links">
-            <li>Monday 5am - 10am</li>
-            <li>Tuseday 5am - 10am</li>
-            <li>Wednesday 5am - 10am</li>
-            <li>Thursday 5am - 10am</li>
-            <li>Friday 5am - 10am</li>
-            <li>Saturday 5am - 10am</li>
-          </ul>
-        </div>
+      <div class="footer__col">
+        <h4>Gym Hours</h4>
+        <ul class="footer__links">
+          <li>Monday 5am - 10am</li>
+          <li>Tuseday 5am - 10am</li>
+          <li>Wednesday 5am - 10am</li>
+          <li>Thursday 5am - 10am</li>
+          <li>Friday 5am - 10am</li>
+          <li>Saturday 5am - 10am</li>
+        </ul>
       </div>
-      <div class="footer__bar">
-        Fitness Point
-      </div>
-    </section>
+    </div>
+    <div class="footer__bar">
+      Fitness Point
+    </div>
+  </section>
 
-    <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Get the token from localStorage
-    const token = localStorage.getItem("auth_token");
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Get the token from localStorage
+      const token = localStorage.getItem("auth_token");
 
-    if (token) {
-      // Decode the token to extract user details
-      const decodedToken = jwt_decode(token);
+      if (token) {
+        // Decode the token to extract user details
+        const decodedToken = jwt_decode(token);
+        console.log(decodedToken,"decodedToken")
 
-      // Extract the user’s name from the decoded token
-      const userName = decodedToken.user.fullname;
+        // Extract the user’s name from the decoded token
+        const userName = decodedToken.user.fullname;
+        const role = decodedToken.user.role;
 
-      // Display a personalized welcome message on the navbar
-      const welcomeMessage = document.getElementById("welcomeMessage");
-      welcomeMessage.textContent = `Welcome, ${userName}`;
+        // Display a personalized welcome message on the navbar
+        const welcomeMessage = document.getElementById("welcomeMessage") || {};
+        welcomeMessage.textContent = `Welcome, ${userName}`;
 
-      // Show the logout button and hide the login button
-      document.getElementById("logoutBtn").style.display = "inline-block";
-      document.getElementById("loginBtn").style.display = "none";
-    } else {
-      // If no token exists, show a generic navbar or the login button
-      const welcomeMessage = document.getElementById("welcomeMessage");
-      welcomeMessage.textContent = "Welcome, Guest";
+        // Show the logout button and hide the login button
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loginBtn = document.getElementById("loginBtn");
+        const sessionhd = document.getElementById("sessionhd");
+        const startedBtn = document.getElementById("startedBtn");
+        sessionhd.style.display = "none"
 
-      // Optionally, hide the logout button and show login
-      document.getElementById("logoutBtn").style.display = "none";
-      document.getElementById("loginBtn").style.display = "inline-block";
-    }
-  });
+        console.log(loginBtn,"loginBtn")
+        if (logoutBtn) {
+          logoutBtn.style.display = "inline-block";
+        }
+        if (loginBtn) {
+          loginBtn.style.display = "none";
+        }
+        if (role == "user") {
+          startedBtn.style.display = "inline-block";
+        }
+      } else {
+        // If no token exists, show a generic navbar or the login button
+        const welcomeMessage = document.getElementById("welcomeMessage") || {};
+        welcomeMessage.textContent = "Welcome, Guest";
 
-  // Handle logout action
-  document.getElementById("logoutBtn").addEventListener("click", (event) => {
-    event.preventDefault();
+        // Optionally, hide the logout button and show login
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loginBtn = document.getElementById("loginBtn");
+        const sessionhd = document.getElementById("sessionhd");
+        sessionhd.style.display = "inline-block";
 
-    // Remove the token from localStorage
-    localStorage.removeItem("auth_token");
+        if (logoutBtn) {
+          logoutBtn.style.display = "none";
+        }
+        if (loginBtn) {
+          loginBtn.style.display = "inline-block";
+        }
+      }
+      const logoutBtn = document.getElementById("logoutBtn");
 
-    // Redirect to the login page
-    window.location.href = "/login";
-  });
+      if (logoutBtn) {
+        // Handle logout action
+        logoutBtn.addEventListener("click", (event) => {
+          event.preventDefault();
+          localStorage.removeItem("auth_token");
+          localStorage.removeItem("user_fullname");
+          window.location.href = "/login";
+        });
+      } else {
+        console.error("logoutBtn element not found");
+      }
+    });
+
+    window.onload = () => {
+      const userName = localStorage.getItem("user_fullname");
+
+      if (userName) {
+        document.getElementById("navbar-user").innerHTML = `Welcome, ${userName}`;
+      }
+    };
+  </script>
 
 
 
-  window.onload = () => {
-  const userName = localStorage.getItem("user_fullname");
+</body>
 
-  if (userName) {
-    document.getElementById("navbar-user").innerHTML = `Welcome, ${userName}`;
-  }
-};
-
-</script>
-
-
-
-  </body>
 </html>
