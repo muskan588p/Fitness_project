@@ -11,7 +11,7 @@
   <body>
     <section class="container">
       <header>Registration Form</header>
-      <form action="/apply" method="POST" class="form">
+      <form action="/appl" method="POST" class="form" enctype="multipart/form-data">
         <div class="input-box">
           <label>Full Name</label>
           <input type="text" name="fullname" placeholder="Enter full name" required />
@@ -58,7 +58,7 @@
           <div class="column">
             <input type="text" name="city" placeholder="Enter your city" required />
           </div>
-          {{!-- <input type="file" name="file"/> --}}
+          <input type="file" name="file"/>
         </div>
         <button type="submit">Submit</button>
       </form>

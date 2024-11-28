@@ -14,7 +14,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 const port = process.env.PORT || 8000;
 const bcrypt = require("bcrypt");
-const multer=require("multer");
 const bookingSchema=require("./models/bookingModel");
 // const authorizeTrainer = require("./middleware/jwtAuthMiddleware");
 const cookieparser = require("cookie-parser");
@@ -25,18 +24,23 @@ const Booking = require('./models/bookingModel');
 // const cheatsheetRoutes = require('./routes/cheatsheet');
 // app.use(cheatsheetRoutes);
 
-// const cheatsheetRoute = require("./routes/cheatsheetRoute");
+const crypto=require("crypto");
+const multer = require('multer');
 
-// const storage=multer.diskStorage({
-//     destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
-//         return cb(null,"./uploads");
-//     },  
-//     filename: function(req,file,cb){
-//         return cb(null, ${Date.now()}-${file.originalname});
-//     },
-// });
+const storage=multer.diskStorage({
+  destination: function(req,file,cb) {          //konse folder ke andar file ko store krna hai
+      return cb(null,"./uploads");
+  },  
+  filename: function(req,file,cb){
+      crypto.randomBytes(12,function(err,bytes){
+        const fn=bytes.toString("hex") + path.extname(file.originalname);
+        return cb(null, fn);
+      })     
+  },
+});
 
-// const upload=multer({storage: storage});
+const upload = multer({ storage: storage });
+
 
 // dotenv.config();
 
@@ -113,8 +117,8 @@ app.get("/book", (req, res) => {
 // });
 
 
-// app.post("/apply", upload.single("file"), async (req, res) => {
-app.post("/apply", async (req, res) => {
+app.post("/appl", upload.single("file"), async (req, res) => {
+// app.post("/apply", async (req, res) => {
   try {
     const application_user = new applicationModel({
       fullname: req.body.fullname,

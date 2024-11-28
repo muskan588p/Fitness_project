@@ -1,0 +1,372 @@
+Non-Preemptive Scheduling 
+a scheduling approach where once a process starts execution, it cannot be stopped until it finishes or voluntarily yields control.
+
+Advantages
+Simplicity, no context switching
+Disadvantages
+Potential for poor responsiveness and system utilization
+
+First-Come, First-Served (FCFS)  
+processes are executed in the order they arrive in the ready queue.
+
+characteristics: simple, easy to implement
+Eg: a queue analogy
+pros and cons: fair, but can lead to the "convoy effect"
+
+Shortest Job Next (SJN)
+the process with the smallest execution time is selected next.
+
+characteristics: minimizes average waiting time
+eg: scheduling based on job length
+pros and cons: optimal in terms of average wait time but requires knowledge of job duration
+
+
+priority scheduling
+processes are assigned priority levels; the highest priority process is scheduled next.
+
+characteristics: can be preemptive or non-preemptive
+eg: task prioritization in a system
+pros and cons: can lead to starvation if low-priority processes are perpetually bypassed
+
+
+race conditions
+a situation where the behavior of software depends on the sequence or timing of uncontrollable events
+importance: Can lead to unpredictable results and system errors
+eg: in real-world systems
+
+causes: Concurrent access to shared resources
+lack of proper synchronization mechanisms
+eg: Two threads updating a shared variable without locks
+
+prevention: Synchronization techniques: Locks, Semaphores, Monitors, atomic operations
+eg: Using mutexes to protect shared resources
+
+
+threading
+
+a thread is smallest unit of execution within a process 
+multiple threads within a single process share same resources but run independently
+
+components- threads share the same resources but operate independently
+
+states of threads
+new, ready, running, waiting, terminating
+
+diff between process and thread
+
+multithreading
+allows parallel execution of tasks
+threads share same memory and resources
+better user experience as taken can run concurrently
+threads are lightweight compared to process
+
+running multiple threads in parallel within the same application.
+Concurrency vs. Parallelism:
+Concurrency: Multiple threads make progress within the same time frame.
+Parallelism: Multiple threads execute simultaneously on different processors.
+
+thread creation and management
+
+thread creation: 
+using libraries or language constructs (e.g., Thread class in Java, threading module in Python).
+thread Lifecycle: 
+Creation, Scheduling, Execution, and Termination.
+thread Synchronization: 
+Techniques to avoid race conditions and ensure data consistency (e.g., mutexes, semaphores).
+
+thread synchronization
+
+race conditions: when two threads access shared data simultaneously
+locks and mutexes: Mechanisms to control access to shared resources
+condition variables: Used for thread coordination and communication
+deadlock: a situation where threads are stuck waiting for each other to release resources
+
+challenges-
+
+thread safety: ensuring that code works correctly when multiple threads access it.
+debugging: threads can make debugging more complex.
+performance overheads: Context switching and synchronization can affect performance.
+
+
+
+https://www.sanfoundry.com/operating-system-questions-answers/#google_vignette
+
+memory management
+importance in operating systems
+contiguous memory allocation, paging, segmentation
+
+memory allocation where each process is allocated a single contiguous block memory
+
+advantages
+simple to implement
+efficient access to memory to there is no need to complex translation
+
+disadvantages
+external fragmentation. as process are loaded and removed, free memory become fragmented
+difficulty in allocating large contiguous blocks if memory becomes fragmented
+
+paging
+memory management technique where processes are divide into small fixed size blocks called pages
+physical memories is divided into page frames of the same size.
+
+advantages 
+eliminates external frag
+efficient use of memory with flexible page allocation
+
+disadvantages
+internal frag: last page might not be fully utilized
+overhead of maintaining page tables
+
+segmentation 
+memory management technique where processes are divided into segment based on logical units such as functions or data structures
+each segment can be of variable size
+
+advantages
+provide logical 
+
+disadvantages 
+external frag: free memory can become fragmented as segments as allocated and deallocated
+complexity in memory management
+
+virtual memory
+It is a memory management technique that creates an illusion of a larger amount of RAM by using disk space to extend physical memory.
+allows for efficient multitasking and handling large applications
+
+components:
+Physical Memory (RAM)
+Virtual Address Space
+Disk Storage (Swap Space)
+
+page faults
+
+it occurs when a program tries to access a page that is not currently in physical memory
+
+steps in Handling a Page Fault:
+trap to the OS:       the CPU traps to the operating system.
+page location:        OS determines if the page is on disk.
+page replacement:     if necessary, select a page to be replaced.
+load page:            load the required page into RAM.
+resume execution:     resume the program’s execution.
+
+thrashing
+It occurs when the operating system spends the majority of its time swapping pages in and out of memory, leading to a significant decrease in performance.
+cause: excessive paging due to overcommitment of memory or inefficient page replacement policies.
+symptoms: high paging activity, slow performance, and increased disk activity.
+
+
+Page Replacement Algo
+to manage the contents of physical memory efficiently when a page fault occurs.
+
+FIFO (First-In-First-Out)
+
+replaces the oldest page in memory.
+eg if pages A, B, C are in memory, and A is the oldest, page A will be replaced first.
+
+LRU (Least Recently Used)
+
+replaces the page that has not been used for the longest time.
+eg if pages A, B, C are in memory and page B hasn’t been used for the longest time, page B will be replaced.
+
+Optimal (OPT)
+
+replaces the page that will not be used for the longest time in the future.
+eg requires future knowledge of page references.
+
+comparison
+FIFO:
+Simplicity
+Can lead to Belady's Anomaly (worse performance with more frames)
+
+LRU:
+Closer to optimal performance
+More complex to implement
+
+Optimal:
+Provides best possible performance
+Impractical in real systems due to future knowledge requirement
+
+
+
+file systems
+a file system is a method and data structure that an operating system uses to manage files on a disk or partition
+
+key functions
+organize data
+manage data storage
+control access to files
+
+importance
+data organization efficient data storage and retrieval
+data integrity ensures data is safe and consistent
+user accessibility allows users to create, delete, modify files easily
+
+Types of File Systems
+FAT (File Allocation Table)
+NTFS (New Technology File System)
+ext (Extended File System)
+HFS (Hierarchical File System)
+APFS (Apple File System)
+
+
+FAT (FILE ALLOCATION)
+files basic units of storage
+directories structure that contain files and subdirectories
+metadata: information about files (size, type, permissions).
+
+
+
+implementation
+data structures-understanding how data is physically stored on disks
+data structures-common structures used(nodes, file allocation, tables)
+access methods- how files are accessed (sequential, direct, indexed)
+
+file allocation methods
+contiguous allocation- all blocks of file are stored sequentially
+limited allocation- Each file block points to the next.
+indexed allocation- an index block points to all file blocks.
+
+Free Space Management: Techniques to manage available storage.
+Methods:
+Bitmaps
+Linked lists
+Grouping
+
+Future Trends in File Systems
+
+cloud storage: increasing reliance on cloud-based file systems.
+distributed file systems: Managing files across multiple systems.
+improved security: encryption and access control enhancements.
+
+
+
+
+30.9.24
+concurrency
+
+1 it is the execution of the multiple instruction sequences at the same time.
+2 it happens in the operating system when there are several process threads running in parallel.
+3 the running process threads always communicate with each other through shared memory or message passing.
+4 concurrency results in sharing of resources result in problems like deadlocks and resources starvation.
+5 it helps in techniques like coordinating execution of processes, memory allocation and execution scheduling for maximizing throughput.
+
+problem in concurrency
+1 sharing global resources – sharing of global resources safely is difficult. If two processes both make use of a global variable and both
+perform read and write on that variable, then the order in which various read and write are executed is critical.
+2 optimal allocation of resources – It is difficult for the operating system to manage the allocation of resources optimally.
+3 locating programming errors – It is very difficult to locate a programming error because reports are usually not reproducible
+4 locking the channel – It may be inefficient for the operating system to simply lock the channel and prevents its use by other processes.
+
+advantages 
+1 running of multiple applications – It enable to run multiple applications at the same time.
+2 better resource utilization – It enables that the resources that are unused by one application can be used for other
+applications
+3 better average response time – Without concurrency, each application has to be run to completion before the next one can be run.
+
+disadvantages 
+1 it is required to protect multiple applications from one another
+2 it is required to coordinate multiple applications through additional mechanisms
+3 additional performance overheads and complexities in operating systems are required for switching among applications
+4 sometimes running too many applications concurrently leads
+
+synchronization in OS
+on the basis of synchronization, processes are categorized as one of the following two types:
+1 independent Process : Execution of one process does not affects the execution of other processes.
+2 cooperative Process : Execution of one process affects the execution of other processes. 
+
+The procedure involved in preserving the appropriate order of execution of cooperative processes is known as Process Synchronization.
+
+mechanism
+race condition : it is typically occurs when two or more threads try to read, write and possibly make the decisions based on the memory that they are accessing concurrently.
+critical section : the regions of a program that try to access shared resources and may cause race conditions are called critical section. To avoid race condition among the processes, we need to assure that only one process at a time can execute within the critical section
+
+
+
+Critical Section Problem
+it is the part of a program which tries to access shared resources. 
+That resource may be any resource in a computer like a memory location, Data structure, CPU or any IO device.
+
+The critical section cannot be executed by more than one process at the same time; operating system faces the difficulties in allowing and disallowing the processes from entering the critical section.
+
+The critical section problem is used to design a set of protocols which can ensure that the Race condition among the processes will never arise.
+
+Critical Section Problem
+it is a code segment that can be accessed by only one process at a time. 
+it contains shared variables which need to be synchronized to maintain consistency of data variables.
+
+Requirements of Synchronization mechanisms
+
+1 primary
+2 mutual Exclusion (MUTEX)
+
+requirements of Synchronization mechanisms
+primary
+progress - it means that if one process doesn't need to execute into critical section then it should not stop other processes to get into the critical section.
+secondary
+bounded Waiting
+
+
+mutual exclusion
+A mutual exclusion (mutex) is a program in which Shared resource is not allowed to access by more than one process at same time is called mutual exclusion.
+
+semaphore in IPC
+In computer science, a semaphore is a variable or abstract data type used to control access to a common resource by multiple processes in a concurrent system such as a multiprogramming operating system.
+It is a simply a variable. This variable is used to solve critical section problem and to achieve process synchronization in the multi processing environment
+
+monitor
+It is a synchronization construct that allows threads to have both mutual exclusion and the ability to wait (block) for a certain condition to become true.
+Monitors also have a mechanism for signaling other threads that their condition has been met.
+A monitor consists of a mutex (lock) object and condition variables. 
+A condition variable is basically a container of threads that are waiting for a certain condition.
+Monitors provide a mechanism for threads to temporarily give up exclusive access in order to wait for some condition to be met, before regaining exclusive access and resuming their task.
+
+
+
+
+Deadlock
+
+it is a situation in which two computer programs sharing the same resource are effectively preventing each other from accessing the resource, resulting in both programs ceasing to function. The earliest computer operating systems ran only one program at a time
+
+Deadlock Condition
+Mutual Exclusion - One or more than one resource are non sharable(Only one process at a time.
+Hold and Wait - A process is holding at least
+one resource and waiting for resources.
+Circular Wait: A set of processes are waiting for each other in circular form.
+
+No Preemption
+A resource cannot be taken from a process unless the process releases the resource.
+
+
+Methods for handling deadlock:
+There are three ways to handle deadlock.
+1 deadlock prevention or avoidance: The idea is to not let the system into device lock state.
+2 deadlock detection and recovery: Let deadlock occur then do preemption to handle it once occurred."
+3 ignore the problem all together: If deadlock is very rare then let it happen and reboot the system. This is the approach that both windows and Unix take.
+
+recovery
+1 preemption We can take a resource from one process and give it to other. This will resolve the deadlock situation, but sometimes it does causes problems.
+2 rollback-  In situations where deadlock is a real possibility, the system can periodically make a record of the state of each process and when deadlock occurs, roll everything back to the last checkpoint, and restart, but allocating resources differently so that deadlock does not occur.
+3 Kill one or more processes. This is the simplest way, but it works.
+
+prevention
+We can prevent Deadlock by eliminating any of the above four condition.
+
+Eliminate Mutual Exclusion
+It is not possible to dis-satisfy the mutual exclusion because some resources, such as the tap drive and printer, are inherently non-shareable.
+
+Eliminate Hold and wait
+1 allocate all required resources to the process before start of its execution, this way hold and wait condition is eliminated but it will lead to low device utilization. for example, if a process requires printer at a later time and we have allocated printer before the start of its execution printer will remained blocked till it has completed its execution.
+
+Avoidance
+
+Banker’s Algorithm
+It is a deadlock avoidance algorithm
+It is named so because this algorithm is used in banking systems to determine whether a loan can be granted or not.
+
+
+
+3.10.24
+
+Normal Schedulers-these schedulers decide order in which tasks are executed based on priority or other criteria. They are dynamic and can change the execution order based on system conditions
+
+
+o
