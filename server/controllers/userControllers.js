@@ -38,6 +38,13 @@ const signup = async (req, res) => {
     await gym_new_user.save();
     console.log("User successfully registered");
 
+    return res.send(`
+      <script>
+        alert("Registration successful! You can now log in.");
+        window.location.href = "/login";
+      </script>
+    `);
+
   //   // Generate JWT token
   //   const token = jwt.sign(
   //     { 
@@ -58,7 +65,7 @@ const signup = async (req, res) => {
 
     // Render the login page with a success message
     // return res.status(201).render("login", { success: 1 });
-    return res.status(201).redirect("/login?success=1");
+    // return res.status(201).redirect("/login?success=1");
     // res.status(201).json(gym_new_user)
 
   } catch (error) {
