@@ -17,6 +17,7 @@ const bcrypt = require("bcrypt");
 const bookingSchema=require("./models/bookingModel");
 // const authorizeTrainer = require("./middleware/jwtAuthMiddleware");
 const cookieparser = require("cookie-parser");
+const cors=require("cors");
 
 const Booking = require('./models/bookingModel');
 // const authenticateUser = require("./middleware/jwtAuthMiddleware");
